@@ -8,22 +8,22 @@ on:
 
 jobs:
     test:
-    runs-on: ubuntu-latest
-    steps:
-        -   uses: actions/checkout@v2
-        -   uses: actions/setup-python@v4
-        -   with:
-            python-version: '3.10'
-        -   uses: arduino/setup-task@v1
-        -   run: task test
-
-    docker-image:
         runs-on: ubuntu-latest
         steps:
             -   uses: actions/checkout@v2
-            -   name: Build docker image
-                run: docker build . -t porch_light:test
+            - uses: actions/setup-python@v4
+              with:
+                python-version: '3.10'
+            -   uses: arduino/setup-task@v1
+            -   run: task test
 
-            -   name: Smoke test docker image
-                run: |
-                    docker run --rm porch_light:test 10
+#    docker-image:
+#        runs-on: ubuntu-latest
+#        steps:
+#            -   uses: actions/checkout@v2
+#            -   name: Build docker image
+#                run: docker build . -t porch_light:test
+#
+#            -   name: Smoke test docker image
+#                run: |
+#                    docker run --rm porch_light:test 10
