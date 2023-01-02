@@ -4,7 +4,6 @@ repos:
   hooks:
   - id: task-test
     name: Task Test
-    stages: [commit]
     language: system
     entry: task test
     pass_filenames: false
