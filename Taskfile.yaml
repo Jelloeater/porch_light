@@ -1,14 +1,14 @@
 version: '3'
 tasks:
-#    default:
-    #      cmds:
-    #      - task: test
+    default:
+        cmds:
+        - task: test
+        - task: build
 
     help:
         silent: true
         cmds:
             - task --list-all
-            - echo "For import and destroy, you need to put -- between the task and the arg, ex (task import -- blah)"
     setup:
         ignore_error: true
         cmds:
@@ -16,6 +16,8 @@ tasks:
             - sudo apt-get install git-secret -y
             - pipenv run pre-commit install -t pre-commit
             - pipenv run pre-commit install -t pre-push
+            - pip install pipenv
+            - pipenv install --deploy --dev
 
     show_secrets:
         - git secret reveal -f
@@ -26,10 +28,12 @@ tasks:
         env:
             PIPENV_VERBOSITY: -1
         cmds:
-            - pip install pipenv
-            - pipenv install --deploy --dev
             - pipenv run isort --recursive --diff .
             - pipenv run black --check .
             - pipenv run flake8
             - pipenv run mypy
             - pipenv run pytest --cov --cov-fail-under=100
+    build:
+        cmds:
+            - sudo docker build . -t porch_light:latest
+            - sudo docker run --rm porch_light:latest

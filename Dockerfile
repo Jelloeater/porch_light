@@ -8,6 +8,9 @@ ENV PYTHONFAULTHANDLER 1
 
 
 FROM base AS python-deps
+# Set timezone
+ENV TZ=America/New_York
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Install pipenv and compilation dependencies
 RUN pip install pipenv
@@ -34,5 +37,5 @@ USER appuser
 COPY . .
 
 # Run the executable
-ENTRYPOINT ["python", "-m", "porch_light"]
-CMD ["10"]
+RUN ls -a -R
+CMD [ "python", "porch_light/porch_light.py" ]
