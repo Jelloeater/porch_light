@@ -1,0 +1,25 @@
+version: '3'
+tasks:
+    #  default:
+    #    cmds:
+    #    - task: init
+    #    - task: apply
+    #    - task: clean
+
+    help:
+        silent: true
+        cmds:
+            - task --list-all
+            - echo "For import and destroy, you need to put -- between the task and the arg, ex (task import -- blah)"
+    setup:
+        ignore_error: true
+        cmds:
+            - pipenv install --dev
+            - sudo apt-get install git-secret -y
+            - pipenv run pre-commit install -t pre-commit
+            - pipenv run pre-commit install -t pre-push
+
+    show_secrets:
+        - git secret reveal -f
+    save_secrets:
+        - git secret hide -m -d
