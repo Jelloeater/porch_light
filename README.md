@@ -3,9 +3,7 @@
 ## Setup
 
 ```sh
-```bash
-sudo snap install task --classic
-task setup
+sudo snap install task --classic; task setup; task test
 ```
 
 Module              | Packages
