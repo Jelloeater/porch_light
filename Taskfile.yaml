@@ -8,44 +8,46 @@ tasks:
         silent: true
         cmds:
             - task --list-all
-    setup-gh:
+
+# Dev
+    setup:
         ignore_error: true
         cmds:
             - pip install pipenv
             - sudo apt-get install git-secret -y
             - pipenv install --dev
-    setup:
-        ignore_error: true
-        cmds:
-            - task: setup-gh
             - pipenv run pre-commit install -t pre-commit
             - pipenv run pre-commit install -t pre-push
     show_secrets:
         - git secret reveal -f >> /dev/null
     save_secrets:
         - git secret hide -m -d >> /dev/null
+    update_pipfile:
+        - rm Pipfile
+        - rm Pipfile.lock
+        - pip freeze > requirements.txt
+        - pipenv install --dev -r requirements.txt
+        - rm requirements.txt
 
+# Test
     test:
         cmds:
             - task: show_secrets
             - task: test-run
     test-run:
         dotenv: ['.env']
+        silent: false
+        interactive: true
         env:
             PIPENV_VERBOSITY: -1
         cmds:
             - pipenv run isort --recursive --diff .
-            - pipenv run black --check .
-            - pipenv run flake8
+            - pipenv run black .
+            - mypy --install-types
             - pipenv run mypy
             - pipenv run pytest --cov --cov-fail-under=100
 
-    commit:
-        - task: test
-        - task: save_secrets
-    github:
-        - task: setup-gh
-        - task: test
+# Docker
     build:
         cmds:
             - sudo docker build . -t porch_light:latest
@@ -55,3 +57,17 @@ tasks:
             - task: build
             - sudo docker run --rm porch_light:latest
 
+# CICD Stuff
+    github:
+        ignore_error: true
+        cmds:
+            - pip install pipenv
+            - sudo apt-get install git-secret -y
+            - pipenv install --dev
+            - task: test
+    commit:
+        - task: test
+        - task: save_secrets
+    push:
+        - task: commit
+        - pipenv run flake8 # Only be picky during push

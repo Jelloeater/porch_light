@@ -1,4 +1,7 @@
 import logging
+import os
+import requests
+from dotenv import load_dotenv
 
 # syslog_handler = logging.handlers.SysLogHandler(address=(settings.syslog_server, settings.syslog_port))
 console_handler = logging.StreamHandler()
@@ -13,9 +16,30 @@ console_handler.setFormatter(
 logging.basicConfig(level=logging.DEBUG, handlers=[console_handler])
 
 
+class hub:
+    def __init__(self, host, app_id, token):
+        self.host = host
+        self.app_id = app_id
+        self.token = token
+        self.base_url_prefix = self.host + "/api/" + self.app_id + "/apps/101/devices/"
+        self.devices = self.get_devices()
+
+    def get_devices(self):
+        r = requests.get(
+            url=self.base_url_prefix + "all", params={"access_token": self.token}
+        )
+        return r.json()
+
+
 class Main:
     def start(self):
         logging.debug("SoP")
+        load_dotenv()
+        host = "https://cloud.hubitat.com"
+        app_id = os.getenv("hubitat_api_app_id")
+        token = os.getenv("hubitat_api_token")
+        h = hub(host=host, app_id=app_id, token=token)
+        logging.debug("")
 
 
 if __name__ == "__main__":
