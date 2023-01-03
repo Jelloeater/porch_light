@@ -41,7 +41,9 @@ tasks:
     commit:
         - task: test
         - task: save_secrets
-
+    github:
+        - task: setup
+        - task: test
     build:
         cmds:
             - sudo docker build . -t porch_light:latest
