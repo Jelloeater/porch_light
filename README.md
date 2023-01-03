@@ -1,10 +1,17 @@
 # porch_light
 
-## Setup
+## Development setup
+- Need Python > 3.10 Installed
 
+- Install Go-Task
+- Linux
+  - sudo snap install task --classic;
+
+## Python setup
 ```sh
-sudo snap install task --classic; task setup; task test
+task setup; task test;
 ```
+
 
 Module              | Packages
 -|-
