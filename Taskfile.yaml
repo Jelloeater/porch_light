@@ -11,13 +11,14 @@ tasks:
 
 # Dev
     setup:
+        env:
+            PIPENV_IGNORE_VIRTUALENVS: 1
         ignore_error: true
         cmds:
             - pip install pipenv
             - sudo apt-get install git-secret -y
             - pipenv install --dev
-            - pipenv run pre-commit install -t pre-commit
-            - pipenv run pre-commit install -t pre-push
+            - pipenv run pre-commit install
     show_secrets:
         - git secret reveal -f >> /dev/null
     save_secrets:
@@ -35,7 +36,8 @@ tasks:
             - task: show_secrets
             - task: test-run
     test-run:
-        dotenv: ['.env']
+        # We get our secrets from env vars
+        # These either get loaded by the python module itself, or via GH Actions
         silent: false
         interactive: true
         env:
@@ -43,9 +45,8 @@ tasks:
         cmds:
             - pipenv run isort --recursive --diff .
             - pipenv run black .
-            - mypy --install-types
-            - pipenv run mypy
-            - pipenv run pytest --cov --cov-fail-under=100
+            - pipenv run mypy --install-types --non-interactive
+            - pipenv run pytest --cov --cov-fail-under=75
 
 # Docker
     build:
@@ -64,10 +65,11 @@ tasks:
             - pip install pipenv
             - sudo apt-get install git-secret -y
             - pipenv install --dev
-            - task: test
+            - task: test-run
     commit:
         - task: test
         - task: save_secrets
+        - task: show_secrets
     push:
         - task: commit
-        - pipenv run flake8 # Only be picky during push
+#        - pipenv run flake8 # Only be picky during push

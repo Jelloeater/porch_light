@@ -32,13 +32,17 @@ class hub:
 
 
 class Main:
-    def start(self):
-        logging.debug("SoP")
-        load_dotenv()
+    @staticmethod
+    def get_hub():
+        load_dotenv()  # Load Env file if dev locally, if remote, env vars must be loaded externally
         host = "https://cloud.hubitat.com"
         app_id = os.getenv("hubitat_api_app_id")
         token = os.getenv("hubitat_api_token")
-        h = hub(host=host, app_id=app_id, token=token)
+        return hub(host=host, app_id=app_id, token=token)
+
+    def start(self):
+        logging.debug("SoP")
+        h = self.get_hub()
         logging.debug("")
 
 
