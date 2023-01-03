@@ -4,7 +4,6 @@ tasks:
         cmds:
         - task: test
         - task: build
-
     help:
         silent: true
         cmds:
@@ -20,11 +19,16 @@ tasks:
             - pipenv install --deploy --dev
 
     show_secrets:
-        - git secret reveal -f
+        - git secret reveal -f >> /dev/null
     save_secrets:
-        - git secret hide -m -d
+        - git secret hide -m -d >> /dev/null
 
     test:
+        cmds:
+            - task: show_secrets
+            - task: test-run
+    test-run:
+        dotenv: ['.env']
         env:
             PIPENV_VERBOSITY: -1
         cmds:
@@ -33,7 +37,17 @@ tasks:
             - pipenv run flake8
             - pipenv run mypy
             - pipenv run pytest --cov --cov-fail-under=100
+
+    commit:
+        - task: test
+        - task: save_secrets
+
     build:
         cmds:
             - sudo docker build . -t porch_light:latest
+    run:
+        cmds:
+            - task: test
+            - task: build
             - sudo docker run --rm porch_light:latest
+
