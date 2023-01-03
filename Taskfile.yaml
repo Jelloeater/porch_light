@@ -8,16 +8,18 @@ tasks:
         silent: true
         cmds:
             - task --list-all
+    setup-gh:
+        ignore_error: true
+        cmds:
+            - pip install pipenv
+            - sudo apt-get install git-secret -y
+            - pipenv install --dev
     setup:
         ignore_error: true
         cmds:
-            - pipenv install --dev
-            - sudo apt-get install git-secret -y
+            - task: setup-gh
             - pipenv run pre-commit install -t pre-commit
             - pipenv run pre-commit install -t pre-push
-            - pip install pipenv
-            - pipenv install --deploy --dev
-
     show_secrets:
         - git secret reveal -f >> /dev/null
     save_secrets:
@@ -42,7 +44,7 @@ tasks:
         - task: test
         - task: save_secrets
     github:
-        - task: setup
+        - task: setup-gh
         - task: test
     build:
         cmds:
