@@ -36,8 +36,8 @@ class Main:
     def get_hub():
         load_dotenv()  # Load Env file if dev locally, if remote, env vars must be loaded externally
         host = "https://cloud.hubitat.com"
-        app_id = os.getenv("hubitat_api_app_id")
-        token = os.getenv("hubitat_api_token")
+        app_id = os.getenv("HUBITAT_API_APP_ID")
+        token = os.getenv("HUBITAT_API_TOKEN")
         return hub(host=host, app_id=app_id, token=token)
 
     def start(self):
