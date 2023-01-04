@@ -12,6 +12,12 @@
 task setup; task test;
 ```
 
+## Secrets
+**API keys are stored in env vars, plain and simple**
+For local dev, these get loaded by `from dotenv import load_dotenv` from a PGP encrypted .env file. 
+This file needs to be open during local testing. Hashi Vault would be nicer, but meh.
+For docker builds, they get passed in via the task file (which reads the same .env file), which sets them on the host
+For CI/CD, they are passed in via secrets from GitHub
 
 Module              | Packages
 -|-

@@ -54,10 +54,10 @@ tasks:
             - sudo docker build . -t porch_light:latest
             - task: show_secrets
     run:
-#        dotenv: ['.env']
+        dotenv: ['.env', '{{.ENV}}/.env.', '{{.HOME}}/.env'] # Setup env vars from file for docker run
         cmds:
             - task: build
-            - sudo docker run --rm porch_light:latest
+            - sudo docker run -e HUBITAT_API_APP_ID=$HUBITAT_API_APP_ID -e HUBITAT_API_TOKEN=$HUBITAT_API_TOKEN --rm porch_light:latest
 
 # CICD Stuff
     github:
@@ -69,9 +69,10 @@ tasks:
             - printenv
             - task: test-run
     commit:
-        - task: test
         - task: save_secrets
         - task: show_secrets
     push:
-        - task: commit
+        -   task: show_secrets
+        -   task: test
+        -   task: save_secrets
 #        - pipenv run flake8 # Only be picky during push
