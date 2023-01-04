@@ -7,6 +7,7 @@ load_dotenv()
 
 def test_creds():
     import os
+
     assert os.getenv("HUBITAT_API_APP_ID") is not None
     assert os.getenv("HUBITAT_API_TOKEN") is not None
 

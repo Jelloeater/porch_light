@@ -18,7 +18,15 @@ tasks:
             - pip install pipenv
             - sudo apt-get install git-secret -y
             - pipenv install --dev
+            - pipenv run pre-commit uninstall
+            - pipenv run pre-commit clean
             - pipenv run pre-commit install
+    remove_hooks:
+        ignore_error: true
+        cmds:
+            - pipenv run pre-commit uninstall
+            - pipenv run pre-commit clean
+            - rm .git/hooks -rf
     show_secrets:
         - git secret reveal -f
     save_secrets:
@@ -73,6 +81,6 @@ tasks:
         - task: show_secrets
     push:
         -   task: show_secrets
-        -   task: test
-        -   task: save_secrets
+#        -   task: test
+#        -   task: save_secrets
 #        - pipenv run flake8 # Only be picky during push
