@@ -18,8 +18,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends gcc
 
 # Install python dependencies in /.venv
 COPY Pipfile .
-#COPY Pipfile.lock .
-RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --skip-lock #--deploy
+COPY Pipfile.lock .
+RUN PIPENV_VENV_IN_PROJECT=1 pipenv install #--skip-lock #--deploy
 
 
 FROM base AS runtime
@@ -38,4 +38,5 @@ COPY . .
 
 # Run the executable
 RUN ls -a -R
+RUN printenv
 CMD [ "python", "porch_light/porch_light.py" ]

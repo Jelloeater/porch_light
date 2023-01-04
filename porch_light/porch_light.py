@@ -43,8 +43,10 @@ class Main:
     def start(self):
         logging.debug("SoP")
         h = self.get_hub()
+        assert h is not None
         logging.debug("")
 
 
 if __name__ == "__main__":
+    print(os.environ)
     Main().start()
