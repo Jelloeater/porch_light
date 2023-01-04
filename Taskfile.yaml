@@ -66,6 +66,7 @@ tasks:
             - pip install pipenv
             - sudo apt-get install git-secret -y
             - pipenv install --dev
+            - printenv
             - task: test-run
     commit:
         - task: test
