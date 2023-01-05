@@ -2,14 +2,14 @@ version: '3'
 tasks:
     default:
         cmds:
-        - task: test
-        - task: build
+            -   task: test
+            -   task: build
     help:
         silent: true
         cmds:
             - task --list-all
 
-# Dev
+    # Dev
     setup:
         env:
             PIPENV_IGNORE_VIRTUALENVS: 1
@@ -38,11 +38,11 @@ tasks:
         - pipenv install --dev -r requirements.txt
         - rm requirements.txt
 
-# Test
+    # Test
     test:
         cmds:
-            - task: show_secrets
-            - task: test-run
+            -   task: show_secrets
+            -   task: test-run
     test-run:
         # We get our secrets from env vars
         # These either get loaded by the python module itself, or via GH Actions
@@ -56,21 +56,24 @@ tasks:
             - pipenv run mypy --install-types --non-interactive
             - pipenv run pytest --cov --cov-fail-under=75
 
-# Docker
+    # Docker
     build:
         cmds:
             - sudo docker build . -t porch_light:latest
-            -   task: show_secrets
+    #            -   task: show_secrets
     run:
         dotenv: [ '.env', '{{.ENV}}/.env.', '{{.HOME}}/.env' ] # Setup env vars from file for docker run
         cmds:
             -   task: build
-            - sudo docker run -e HUBITAT_API_APP_ID=$HUBITAT_API_APP_ID -e HUBITAT_API_TOKEN=$HUBITAT_API_TOKEN --rm porch_light:latest
+            - sudo docker run -d --rm --name porch_light -e HUBITAT_API_APP_ID=$HUBITAT_API_APP_ID -e HUBITAT_API_TOKEN=$HUBITAT_API_TOKEN porch_light:latest
+            - sudo docker attach porch_light
 
     # Docker Remote
     deploy:
         - ssh-copy-id -f root@docker >> /dev/null
-        - rsync -av --delete --filter=':- .gitignore' . root@docker:/porch_light/
+#        - rsync -av --delete --filter=':- .gitignore' . root@docker:/porch_light/
+        - ssh root@docker 'docker rm -f porch_light; cd /porch_light/; task run'
+#        - rsync -av --delete --filter=':- .gitignore' . root@docker:/porch_light/
 
     # CICD Stuff
     github:
@@ -82,8 +85,8 @@ tasks:
             - printenv
             -   task: test-run
     commit:
-        - task: save_secrets
-        - task: show_secrets
+        -   task: save_secrets
+        -   task: show_secrets
     push:
         -   task: show_secrets
 #        -   task: test

@@ -1,5 +1,6 @@
 import logging
 import os
+import time
 
 import requests
 
@@ -48,4 +49,6 @@ class Main:
 
 if __name__ == "__main__":
     print(os.environ)
-    Main().start()
+    while True:
+        Main().start()
+        time.sleep(1)
