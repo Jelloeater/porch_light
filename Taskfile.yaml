@@ -60,14 +60,19 @@ tasks:
     build:
         cmds:
             - sudo docker build . -t porch_light:latest
-            - task: show_secrets
+            -   task: show_secrets
     run:
-        dotenv: ['.env', '{{.ENV}}/.env.', '{{.HOME}}/.env'] # Setup env vars from file for docker run
+        dotenv: [ '.env', '{{.ENV}}/.env.', '{{.HOME}}/.env' ] # Setup env vars from file for docker run
         cmds:
-            - task: build
+            -   task: build
             - sudo docker run -e HUBITAT_API_APP_ID=$HUBITAT_API_APP_ID -e HUBITAT_API_TOKEN=$HUBITAT_API_TOKEN --rm porch_light:latest
 
-# CICD Stuff
+    # Docker Remote
+    deploy:
+        - ssh-copy-id -f root@docker >> /dev/null
+        - rsync -av --delete --filter=':- .gitignore' . root@docker:/porch_light/
+
+    # CICD Stuff
     github:
         ignore_error: true
         cmds:
@@ -75,7 +80,7 @@ tasks:
             - sudo apt-get install git-secret -y
             - pipenv install --dev
             - printenv
-            - task: test-run
+            -   task: test-run
     commit:
         - task: save_secrets
         - task: show_secrets
