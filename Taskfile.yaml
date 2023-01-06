@@ -1,9 +1,13 @@
 version: '3'
+includes:
+    docker: ./TaskfileDocker.yaml
+
 tasks:
     default:
         cmds:
             -   task: test
-            -   task: build
+            -   task: docker:build
+
     help:
         silent: true
         cmds:
@@ -55,30 +59,6 @@ tasks:
             - pipenv run black .
             - pipenv run mypy --install-types --non-interactive
             - pipenv run pytest --cov --cov-fail-under=75
-
-    # Docker
-    build:
-        cmds:
-            - sudo docker build . -t porch_light:latest
-    #            -   task: show_secrets
-    run:
-        dotenv: [ '.env', '{{.ENV}}/.env.', '{{.HOME}}/.env' ] # Setup env vars from file for docker run
-        cmds:
-            -   task: build
-            - sudo docker run -d --rm --name porch_light -e HUBITAT_API_APP_ID=$HUBITAT_API_APP_ID -e HUBITAT_API_TOKEN=$HUBITAT_API_TOKEN porch_light:latest
-    attach:
-        cmds:
-            - sudo docker attach porch_light
-    # Docker Remote
-    login:
-        - ssh-copy-id root@docker >> /dev/null
-    deploy:
-        - rsync -av --delete --filter=':- .gitignore' . root@docker:/porch_light/
-        - task: show_secrets
-        - rsync .env root@docker:/porch_light/.env
-        - ssh root@docker 'docker rm -f porch_light; cd /porch_light/; task run'
-        - rsync -av --delete --filter=':- .gitignore' . root@docker:/porch_light/
-        - task: save_secrets
 
     # CICD Stuff
     github:
