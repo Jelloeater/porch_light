@@ -1,18 +1,19 @@
 version: '3'
 includes:
     docker: ./TaskfileDocker.yaml
+    deploy: ./TaskfileDeploy.yaml
 
 tasks:
     default:
         cmds:
             -   task: test
             -   task: docker:build
-
     help:
         silent: true
         cmds:
             - task --list-all
-
+    deploy:
+        - task: deploy:deploy
     # Dev
     setup:
         env:
@@ -59,16 +60,11 @@ tasks:
             - pipenv run black .
             - pipenv run mypy --install-types --non-interactive
             - pipenv run pytest --cov --cov-fail-under=75
-
     # CICD Stuff
     github:
         ignore_error: true
         cmds:
-            - pip install pipenv
-            - sudo apt-get install git-secret -y
-            - pipenv install --dev
-            - printenv
-            -   task: test-run
+            - task: test-run
     commit:
         -   task: save_secrets
         -   task: show_secrets
