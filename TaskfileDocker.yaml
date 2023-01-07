@@ -1,13 +1,17 @@
 version: '3'
+vars:
+    IMAGE_NAME: porch_light
+
 tasks:
+    # Docker
     purge: docker system prune -a -f --volumes
     run:
         dotenv: [ '.env', '{{.ENV}}/.env.', '{{.HOME}}/.env' ] # Setup env vars from file for docker run
         cmds:
-            - task: build
-            - docker run -d --rm --name porch_light -e HUBITAT_API_APP_ID=$HUBITAT_API_APP_ID -e HUBITAT_API_TOKEN=$HUBITAT_API_TOKEN porch_light:latest
+            -  task: build
+            - docker run --env-file .env -d --rm --name {{.IMAGE_NAME}} {{.IMAGE_NAME}}:latest
     # Docker Remote
-    build: docker build . -t porch_light:latest
-    attach: docker attach porch_light
-    kill: docker kill porch_light
-    logs: docker logs porch_light
+    build: docker build . -t {{.IMAGE_NAME}}:latest
+    attach: docker attach {{.IMAGE_NAME}}
+    kill: docker kill {{.IMAGE_NAME}}
+    logs: docker logs {{.IMAGE_NAME}}

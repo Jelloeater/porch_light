@@ -1,13 +1,12 @@
 version: '3'
+vars:
+    FOLDER: porch_light
 tasks:
     deploy:
-        - rsync -av --delete --filter=':- .gitignore' . root@docker:/porch_light/
-        - task: show_secrets
-        - rsync .env root@docker:/porch_light/.env
-        - ssh root@docker 'docker rm -f porch_light; cd /porch_light/; task docker:run'
-        - rsync -av --delete --filter=':- .gitignore' . root@docker:/porch_light/
-        - task: save_secrets
-    kill: ssh root@docker 'docker kill porch_light'
-    logs: ssh root@docker 'docker logs porch_light'
-    show_secrets: git secret reveal -f
-    save_secrets: git secret hide -m -d
+        - rsync -av --delete --filter=':- .gitignore' . root@docker:/{{.FOLDER}}/
+        - git secret reveal -f
+        - rsync .env root@docker:/{{.FOLDER}}/.env
+        - ssh root@docker 'cd /{{.FOLDER}}/; task docker:run'
+        - rsync -av --delete --filter=':- .gitignore' . root@docker:/{{.FOLDER}}/
+    kill: ssh root@docker 'cd /{{.FOLDER}}/; task docker:kill'
+    logs: ssh root@docker 'cd /{{.FOLDER}}/; task docker:logs'

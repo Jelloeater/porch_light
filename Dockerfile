@@ -38,5 +38,4 @@ COPY . .
 
 # Run the executable
 RUN ls -a -R
-RUN printenv
 CMD [ "python", "porch_light/porch_light.py" ]
