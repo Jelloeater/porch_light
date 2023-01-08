@@ -24,47 +24,45 @@ class Hub:
         self.token = os.getenv("HUBITAT_API_TOKEN")
         self.app_id = os.getenv("HUBITAT_API_APP_ID")
         if cloud:
-            self.base_url_prefix = self.host + "/api/" + self.cloud_id + "/apps/" + self.app_id + "/devices/"
+            self.base_url_prefix = self.host + "/api/" + self.cloud_id + "/apps/" + self.app_id + "/devices"
         else:
-            self.base_url_prefix = self.host + "/apps/api/" + self.app_id + "/devices/"
+            self.base_url_prefix = self.host + "/apps/api/" + self.app_id + "/devices"
         self.devices = self.load_devices()
 
     def load_devices(self) -> list:
         r = requests.get(
-            url=self.base_url_prefix + "all", params={"access_token": self.token}
+            url=self.base_url_prefix, params={"access_token": self.token}
         )
         return r.json()
 
-    def get_device_id(self, name: str) -> int:
+    def get_device(self, name: str) -> int:
         self.devices = self.load_devices()
         for i in self.devices:
             if i['label'] == name:
-                return i['id']
+                return i
 
 
-class Device(Hub):
-    def __init__(self, id: str):
-        super().__init__()
-        for i in self.devices:
-            if i['id'] == id:
-                self.name = i['name']
-                self.label = i['label']
-                self.type = i['type']
-                self.id = i['id']
-                self.commands = i['commands']
-                self.capabilities = i['capabilities']
-                self.attributes = self.update_device_attributes()
-                self.history = self.update_device_history()
+class Device:
+    def __init__(self, device_from_hub):
+        i = device_from_hub
+        self.name = i['name']
+        self.label = i['label']
+        self.type = i['type']
+        self.id = i['id']
+        self.commands = i['commands']  # FIXME Get commands
+        self.capabilities = i['capabilities']  # FIXME Get capabilities
+        self.attributes = self.update_device_attributes()
+        self.history = self.update_device_history()
 
     def update_device_history(self) -> requests.Response:
         r = requests.get(
-            url=self.base_url_prefix + str(self.id) + "/events", params={"access_token": self.token}
+            url=self.base_url_prefix + "/" + str(self.id) + "/events", params={"access_token": self.token}
         )
         return r.json()
 
     def update_device_attributes(self) -> requests.Response:
         r = requests.get(
-            url=self.base_url_prefix + str(self.id), params={"access_token": self.token}
+            url=self.base_url_prefix + "/" + str(self.id), params={"access_token": self.token}
         )
         return r.json()['attributes']
 
