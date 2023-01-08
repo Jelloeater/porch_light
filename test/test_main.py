@@ -39,13 +39,21 @@ def test_send_device_command():
     h = pl.Hub()
     device = pl.Device(h.get_device_id('Porch'))
 
-    test_bulb = pl.Bulb(id=device.id)
+    test_bulb = pl.Bulb(id_in=device.id).turn_on()
     test_bulb.turn_on()
+    assert test_bulb.switch == 'on'
+
+
     test_bulb.turn_off()
-    assert test_bulb.attributes['switch'] == 'off'
-    time.sleep(4)
+    test_bulb.update_bulb()
+    assert test_bulb.switch == 'off'
+
+
     test_bulb.turn_on()
-    assert test_bulb.attributes['switch'] == 'on'
-    time.sleep(4)
+    test_bulb.update_bulb()
+    assert test_bulb.switch == 'on'
+
+
     test_bulb.turn_off()
-    assert test_bulb.attributes['switch'] == 'off'
+    test_bulb.update_bulb()
+    assert test_bulb.switch == 'off'

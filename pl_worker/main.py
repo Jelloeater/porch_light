@@ -53,14 +53,8 @@ class Device(Hub):
                 self.id = i['id']
                 self.commands = i['commands']
                 self.capabilities = i['capabilities']
-                self.attributes = self.update_device_history()
+                self.attributes = self.update_device_attributes()
                 self.history = self.update_device_history()
-
-    def update_attributes(self) -> requests.Response:
-        r = requests.get(
-            url=self.base_url_prefix + str(self.id), params={"access_token": self.token}
-        )
-        return r.json()
 
     def update_device_history(self) -> requests.Response:
         r = requests.get(
@@ -68,23 +62,31 @@ class Device(Hub):
         )
         return r.json()
 
+    def update_device_attributes(self) -> requests.Response:
+        r = requests.get(
+            url=self.base_url_prefix + str(self.id), params={"access_token": self.token}
+        )
+        return r.json()['attributes']
+
     def send_device_command(self, command: str, secondary_command: str = None) -> requests.Response:
         if secondary_command is None:
             r = requests.get(
                 url=self.base_url_prefix + str(self.id) + "/" + command, params={"access_token": self.token}
             )
-            return r.json()
         else:
             r = requests.get(
                 url=self.base_url_prefix + str(self.id) + "/" + command + '/' + secondary_command,
                 params={"access_token": self.token}
             )
-            return r.json()
+        return r.json()
 
 
 class Bulb(Device):
-    def __init__(self, id: str):
-        super().__init__(id)
+    def __init__(self, id_in: str):
+        super().__init__(id_in)
+        self.attributes = self.update_device_attributes()
+        self.level = [x for x in self.attributes if 'level' in x['name']][0]['currentValue']
+        self.switch = [x for x in self.attributes if 'switch' in x['name']][0]['currentValue']
 
     def turn_on(self):
         self.send_device_command(command='on')
