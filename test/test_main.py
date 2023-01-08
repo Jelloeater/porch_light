@@ -22,41 +22,16 @@ def test_hub_get():
         assert False
 
 
-def test_get_device_attributes():
+def test_lookup_device():
     h = pl.Main().get_hub()
-    p = h.get_device_attributes('Porch')
+    p = h.get_device_id('Porch')
     assert p is not None
 
-
-def test_get_device_commands():
+def test_init_device():
     h = pl.Main().get_hub()
-    for i in h.devices:
-        dev = int(i['id'])
-        out = h.get_device_commands(device_id=dev)
-        assert out is not None
+    device = pl.Device(h, h.get_device_id('Porch'))
+    assert device is not None
 
-
-def test_get_device_history():
-    h = pl.Main().get_hub()
-    for i in h.devices:
-        dev = int(i['id'])
-        out = h.get_device_history(device_id=dev)
-        assert out is not None
-
-
-def test_get_device_capabilities():
-    h = pl.Main().get_hub()
-    for i in h.devices:
-        dev = int(i['id'])
-        out = h.get_device_capabilities(device_id=dev)
-        assert out is not None
-
-def test_get_device_id():
-    h = pl.Main().get_hub()
-    for i in h.devices:
-        dev = int(i['id'])
-        out = h.get_device_capabilities(device_id=dev)
-        assert out is not None
 
 def test_send_device_command():
     h = pl.Main().get_hub()

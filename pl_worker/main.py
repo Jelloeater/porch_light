@@ -37,28 +37,25 @@ class Hub:
             if i['label'] == name:
                 return i['id']
 
-    def get_device_attributes(self, name):
-        self._update_devices_()
-        for i in self.devices:
-            if i['label'] == name:
-                return i['attributes']
 
-    def get_device_commands(self, device_id: int):
-        r = requests.get(
-            url=self.base_url_prefix + str(device_id) + "/commands", params={"access_token": self.token}
-        )
-        return r.json()
+class Device():
+    def __init__(self, hub_in: Hub, id: str):
+        self.base_url_prefix = hub_in.base_url_prefix
+        self.token = hub_in.token
+        for i in hub_in.devices:
+            if i['id'] == id:
+                self.name = i['name']
+                self.label = i['label']
+                self.type = i['type']
+                self.id = i['id']
+                self.commands = i['commands']
+                self.capabilities = i['capabilities']
+                self.attributes = i['attributes']
+                self.history = self.update_device_history(self.id)
 
-    def get_device_history(self, device_id: int):
-        self._update_devices_()
+    def update_device_history(self, device_id: int):
         r = requests.get(
             url=self.base_url_prefix + str(device_id) + "/events", params={"access_token": self.token}
-        )
-        return r.json()
-
-    def get_device_capabilities(self, device_id: int):
-        r = requests.get(
-            url=self.base_url_prefix + str(device_id) + "/capabilities", params={"access_token": self.token}
         )
         return r.json()
 
@@ -74,11 +71,6 @@ class Hub:
                 params={"access_token": self.token}
             )
             return r.json()
-
-
-class Bulb(Hub):
-    def __init__(self, id):
-        super().__init__()
 
 
 class Main:
