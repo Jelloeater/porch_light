@@ -1,3 +1,5 @@
+import time
+
 import pytest
 from dotenv import load_dotenv
 
@@ -28,13 +30,22 @@ def test_lookup_device():
     assert p is not None
 
 def test_init_device():
-    h = pl.Main().get_hub()
+    h = pl.Hub()
     device = pl.Device(h, h.get_device_id('Porch'))
     assert device is not None
 
 
 def test_send_device_command():
-    h = pl.Main().get_hub()
-    status = h.get_device_attributes('Porch')['switch']
+    h = pl.Hub()
+    device = pl.Device(h.get_device_id('Porch'))
 
-    print(status)
+    test_bulb = pl.Bulb(id=device.id)
+    test_bulb.turn_on()
+    test_bulb.turn_off()
+    assert test_bulb.attributes['switch'] == 'off'
+    time.sleep(4)
+    test_bulb.turn_on()
+    assert test_bulb.attributes['switch'] == 'on'
+    time.sleep(4)
+    test_bulb.turn_off()
+    assert test_bulb.attributes['switch'] == 'off'
