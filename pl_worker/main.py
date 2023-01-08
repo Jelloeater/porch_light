@@ -29,7 +29,7 @@ class Hub:
             self.base_url_prefix = self.host + "/apps/api/" + self.app_id + "/devices/"
         self.devices = self.load_devices()
 
-    def load_devices(self) -> dict:
+    def load_devices(self) -> list:
         r = requests.get(
             url=self.base_url_prefix + "all", params={"access_token": self.token}
         )
@@ -40,9 +40,6 @@ class Hub:
         for i in self.devices:
             if i['label'] == name:
                 return i['id']
-
-    def update_devices(self):
-        self.devices = self.load_devices()
 
 
 class Device(Hub):
@@ -56,20 +53,22 @@ class Device(Hub):
                 self.id = i['id']
                 self.commands = i['commands']
                 self.capabilities = i['capabilities']
-                self.attributes = i['attributes']
+                self.attributes = self.update_device_history()
                 self.history = self.update_device_history()
 
-    def update_attributes(self):
-        pass
-        # FIXME Update attributes on command send
+    def update_attributes(self) -> requests.Response:
+        r = requests.get(
+            url=self.base_url_prefix + str(self.id), params={"access_token": self.token}
+        )
+        return r.json()
 
-    def update_device_history(self):
+    def update_device_history(self) -> requests.Response:
         r = requests.get(
             url=self.base_url_prefix + str(self.id) + "/events", params={"access_token": self.token}
         )
         return r.json()
 
-    def send_device_command(self, command: str, secondary_command: str = None):
+    def send_device_command(self, command: str, secondary_command: str = None) -> requests.Response:
         if secondary_command is None:
             r = requests.get(
                 url=self.base_url_prefix + str(self.id) + "/" + command, params={"access_token": self.token}
