@@ -18,11 +18,15 @@ logging.basicConfig(level=logging.DEBUG, handlers=[console_handler])
 
 
 class Hub:
-    def __init__(self):
+    def __init__(self, cloud: bool = False):
         self.host = os.getenv("HUBITAT_HOST")
-        self.app_id = os.getenv("HUBITAT_API_APP_ID")
+        self.cloud_id = os.getenv("HUBITAT_CLOUD_ID")
         self.token = os.getenv("HUBITAT_API_TOKEN")
-        self.base_url_prefix = self.host + "/api/" + self.app_id + "/apps/101/devices/"
+        self.app_id = os.getenv("HUBITAT_API_APP_ID")
+        if cloud:
+            self.base_url_prefix = self.host + "/api/" + self.cloud_id + "/apps/" + self.app_id + "/devices/"
+        else:
+            self.base_url_prefix = self.host + "/apps/api/" + self.app_id + "/devices/"
         self.devices = self.load_devices()
 
     def load_devices(self) -> dict:

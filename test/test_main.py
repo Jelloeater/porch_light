@@ -15,7 +15,7 @@ def test_creds():
 
 
 def test_hub_get():
-    h = pl.Main().get_hub()
+    h = pl.Hub()
     if h.devices is not None:
         pytest.hub = h
         assert True
@@ -25,13 +25,13 @@ def test_hub_get():
 
 
 def test_lookup_device():
-    h = pl.Main().get_hub()
+    h = pl.Hub()
     p = h.get_device_id('Porch')
     assert p is not None
 
 def test_init_device():
     h = pl.Hub()
-    device = pl.Device(h, h.get_device_id('Porch'))
+    device = pl.Device(h.get_device_id('Porch'))
     assert device is not None
 
 
