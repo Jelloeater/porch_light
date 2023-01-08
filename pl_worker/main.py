@@ -17,22 +17,28 @@ console_handler.setFormatter(
 logging.basicConfig(level=logging.DEBUG, handlers=[console_handler])
 
 
-class hub:
-    def __init__(self, host, app_id, token):
-        self.host = host
-        self.app_id = app_id
-        self.token = token
+class Hub:
+    def __init__(self):
+        self.host = os.getenv("HUBITAT_HOST")
+        self.app_id = os.getenv("HUBITAT_API_APP_ID")
+        self.token = os.getenv("HUBITAT_API_TOKEN")
         self.base_url_prefix = self.host + "/api/" + self.app_id + "/apps/101/devices/"
-        self.devices = self.get_devices()
+        self.devices = self._update_devices_()
 
-    def get_devices(self) -> dict:
+    def _update_devices_(self) -> dict:
         r = requests.get(
             url=self.base_url_prefix + "all", params={"access_token": self.token}
         )
         return r.json()
 
+    def get_device_id(self, name: str) -> int:
+        self._update_devices_()
+        for i in self.devices:
+            if i['label'] == name:
+                return i['id']
+
     def get_device_attributes(self, name):
-        self.get_devices()
+        self._update_devices_()
         for i in self.devices:
             if i['label'] == name:
                 return i['attributes']
@@ -44,6 +50,7 @@ class hub:
         return r.json()
 
     def get_device_history(self, device_id: int):
+        self._update_devices_()
         r = requests.get(
             url=self.base_url_prefix + str(device_id) + "/events", params={"access_token": self.token}
         )
@@ -69,19 +76,21 @@ class hub:
             return r.json()
 
 
+class Bulb(Hub):
+    def __init__(self, id):
+        super().__init__()
+
+
 class Main:
     @staticmethod
     def get_hub():
-        host = "https://cloud.hubitat.com"
-        app_id = os.getenv("HUBITAT_API_APP_ID")
-        token = os.getenv("HUBITAT_API_TOKEN")
-        return hub(host=host, app_id=app_id, token=token)
+        return Hub()
 
     def start(self):
         logging.debug("SoP")
         h = self.get_hub()
         assert h is not None
-        logging.debug("")
+        logging.debug(h)
 
 
 if __name__ == "__main__":
@@ -89,3 +98,4 @@ if __name__ == "__main__":
     while True:
         Main().start()
         time.sleep(1)
+        break

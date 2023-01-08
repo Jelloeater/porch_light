@@ -34,8 +34,9 @@ WORKDIR /home/appuser
 USER appuser
 
 # Install application into container
+# Don't forget to check the .dockerignore
 COPY . .
 
 # Run the executable
 RUN ls -a -R
-CMD [ "python", "porch_light/porch_light.py" ]
+CMD [ "python", "pl_worker/porch_light.py" ]
