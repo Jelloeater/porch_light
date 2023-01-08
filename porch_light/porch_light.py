@@ -25,11 +25,48 @@ class hub:
         self.base_url_prefix = self.host + "/api/" + self.app_id + "/apps/101/devices/"
         self.devices = self.get_devices()
 
-    def get_devices(self):
+    def get_devices(self) -> dict:
         r = requests.get(
             url=self.base_url_prefix + "all", params={"access_token": self.token}
         )
         return r.json()
+
+    def get_device_attributes(self, name):
+        self.get_devices()
+        for i in self.devices:
+            if i['label'] == name:
+                return i['attributes']
+
+    def get_device_commands(self, device_id: int):
+        r = requests.get(
+            url=self.base_url_prefix + str(device_id) + "/commands", params={"access_token": self.token}
+        )
+        return r.json()
+
+    def get_device_history(self, device_id: int):
+        r = requests.get(
+            url=self.base_url_prefix + str(device_id) + "/events", params={"access_token": self.token}
+        )
+        return r.json()
+
+    def get_device_capabilities(self, device_id: int):
+        r = requests.get(
+            url=self.base_url_prefix + str(device_id) + "/capabilities", params={"access_token": self.token}
+        )
+        return r.json()
+
+    def send_device_command(self, device_id: int, command: str, secondary_command: str = None):
+        if secondary_command is None:
+            r = requests.get(
+                url=self.base_url_prefix + str(device_id) + "/" + command, params={"access_token": self.token}
+            )
+            return r.json()
+        else:
+            r = requests.get(
+                url=self.base_url_prefix + str(device_id) + "/" + command + '/' + secondary_command,
+                params={"access_token": self.token}
+            )
+            return r.json()
 
 
 class Main:
