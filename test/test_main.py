@@ -1,9 +1,7 @@
-import time
 
 import pytest
 from dotenv import load_dotenv
-
-import pl_worker.main as pl
+import pl_worker.Hubitat as Hubitat
 
 load_dotenv()
 
@@ -15,7 +13,7 @@ def test_creds():
 
 
 def test_hub_get():
-    h = pl.Hub()
+    h = Hubitat.Hub()
     if h.devices is not None:
         pytest.hub = h
         assert True
@@ -25,22 +23,22 @@ def test_hub_get():
 
 
 def test_lookup_device():
-    h = pl.Hub()
+    h = Hubitat.Hub()
     p = h.get_device('Porch')
     assert p is not None
 
 
 def test_init_device():
-    h = pl.Hub()
+    h = Hubitat.Hub()
     d = h.get_device('Porch')
-    device = pl.Device(d)
+    device = Hubitat.Device(d)
     assert device is not None
 
 
 def test_send_device_command():
-    h = pl.Hub()
+    h = Hubitat.Hub()
     d = h.get_device('Porch')
-    test_bulb = pl.Bulb(d)
+    test_bulb = Hubitat.Bulb(d)
 
     test_bulb.turn_on()
     assert test_bulb.switch == 'on'
