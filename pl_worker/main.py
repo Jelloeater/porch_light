@@ -32,9 +32,9 @@ class Hubitat():
 class Hub(Hubitat):
     def __init__(self):
         super().__init__()
-        self.devices = self.load_devices()
 
-    def load_devices(self) -> list:
+    @property
+    def devices(self) -> list:
         r = requests.get(
             url=self.base_url_prefix, params={"access_token": self.token}
         )
@@ -53,30 +53,30 @@ class Device(Hubitat):
         self.label = device_from_hub['label']
         self.type = device_from_hub['type']
         self.id = device_from_hub['id']
-        self.commands = self.update_commands()
-        self.capabilities = self.update_capabilities()
-        self.attributes = self.update_device_attributes()
-        self.history = self.update_device_history()
 
-    def update_commands(self):
+    @property
+    def commands(self):
         r = requests.get(
             url=self.base_url_prefix + "/" + str(self.id) + "/commands", params={"access_token": self.token}
         )
         return r.json()
 
-    def update_capabilities(self):
+    @property
+    def capabilities(self):
         r = requests.get(
             url=self.base_url_prefix + "/" + str(self.id) + "/capabilities", params={"access_token": self.token}
         )
         return r.json()[0]
 
-    def update_device_history(self) -> requests.Response:
+    @property
+    def history(self) -> requests.Response:
         r = requests.get(
             url=self.base_url_prefix + "/" + str(self.id) + "/events", params={"access_token": self.token}
         )
         return r.json()
 
-    def update_device_attributes(self) -> requests.Response:
+    @property
+    def attributes(self) -> requests.Response:
         r = requests.get(
             url=self.base_url_prefix + "/" + str(self.id), params={"access_token": self.token}
         )
@@ -92,18 +92,20 @@ class Device(Hubitat):
                 url=self.base_url_prefix + "/" + str(self.id) + "/" + command + '/' + secondary_command,
                 params={"access_token": self.token}
             )
+        time.sleep(.5)
         return r.json()
 
 
 class Bulb(Device):
     def __init__(self, device_from_hub):
         super().__init__(device_from_hub)
-        self.switch = [x for x in self.attributes if "switch" in x["name"]][0]['currentValue']
 
+    @property
+    def switch(self):
+        return [x for x in self.attributes if "switch" in x["name"]][0]['currentValue']
 
     def turn_on(self):
         self.send_device_command(command='on')
-
 
     def turn_off(self):
         self.send_device_command(command='off')
