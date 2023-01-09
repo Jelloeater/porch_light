@@ -32,26 +32,32 @@ def test_lookup_device():
 
 def test_init_device():
     h = pl.Hub()
-    device = pl.Device(device_from_hub=h.get_device('Porch'))
+    d = h.get_device('Porch')
+    device = pl.Device(d)
     assert device is not None
 
 
 def test_send_device_command():
     h = pl.Hub()
-    device = pl.Device(h.get_device_id('Porch'))
+    d = h.get_device('Porch')
+    test_bulb = pl.Bulb(d)
 
-    test_bulb = pl.Bulb(id_in=device.id).turn_on()
+    # x=  test_bulb.get_switch()
     test_bulb.turn_on()
+    # test_bulb.get_switch()
+    y = test_bulb.get_switch()
     assert test_bulb.switch == 'on'
 
     test_bulb.turn_off()
-    test_bulb.update_bulb()
+    # test_bulb.get_switch()
+    z = test_bulb.get_switch()
     assert test_bulb.switch == 'off'
 
     test_bulb.turn_on()
-    test_bulb.update_bulb()
+    # test_bulb.get_switch()
+    a = test_bulb.get_switch()
     assert test_bulb.switch == 'on'
 
     test_bulb.turn_off()
-    test_bulb.update_bulb()
+    # test_bulb.get_switch()
     assert test_bulb.switch == 'off'

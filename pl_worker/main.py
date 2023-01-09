@@ -17,7 +17,7 @@ console_handler.setFormatter(
 logging.basicConfig(level=logging.DEBUG, handlers=[console_handler])
 
 
-class Hub:
+class Hubitat():
     def __init__(self, cloud: bool = False):
         self.host = os.getenv("HUBITAT_HOST")
         self.cloud_id = os.getenv("HUBITAT_CLOUD_ID")
@@ -27,6 +27,11 @@ class Hub:
             self.base_url_prefix = self.host + "/api/" + self.cloud_id + "/apps/" + self.app_id + "/devices"
         else:
             self.base_url_prefix = self.host + "/apps/api/" + self.app_id + "/devices"
+
+
+class Hub(Hubitat):
+    def __init__(self):
+        super().__init__()
         self.devices = self.load_devices()
 
     def load_devices(self) -> list:
@@ -36,23 +41,34 @@ class Hub:
         return r.json()
 
     def get_device(self, name: str) -> int:
-        self.devices = self.load_devices()
         for i in self.devices:
             if i['label'] == name:
                 return i
 
 
-class Device:
+class Device(Hubitat):
     def __init__(self, device_from_hub):
-        i = device_from_hub
-        self.name = i['name']
-        self.label = i['label']
-        self.type = i['type']
-        self.id = i['id']
-        self.commands = i['commands']  # FIXME Get commands
-        self.capabilities = i['capabilities']  # FIXME Get capabilities
+        super().__init__()
+        self.name = device_from_hub['name']
+        self.label = device_from_hub['label']
+        self.type = device_from_hub['type']
+        self.id = device_from_hub['id']
+        self.commands = self.update_commands()
+        self.capabilities = self.update_capabilities()
         self.attributes = self.update_device_attributes()
         self.history = self.update_device_history()
+
+    def update_commands(self):
+        r = requests.get(
+            url=self.base_url_prefix + "/" + str(self.id) + "/commands", params={"access_token": self.token}
+        )
+        return r.json()
+
+    def update_capabilities(self):
+        r = requests.get(
+            url=self.base_url_prefix + "/" + str(self.id) + "/capabilities", params={"access_token": self.token}
+        )
+        return r.json()[0]
 
     def update_device_history(self) -> requests.Response:
         r = requests.get(
@@ -69,25 +85,25 @@ class Device:
     def send_device_command(self, command: str, secondary_command: str = None) -> requests.Response:
         if secondary_command is None:
             r = requests.get(
-                url=self.base_url_prefix + str(self.id) + "/" + command, params={"access_token": self.token}
+                url=self.base_url_prefix + "/" + str(self.id) + "/" + command, params={"access_token": self.token}
             )
         else:
             r = requests.get(
-                url=self.base_url_prefix + str(self.id) + "/" + command + '/' + secondary_command,
+                url=self.base_url_prefix + "/" + str(self.id) + "/" + command + '/' + secondary_command,
                 params={"access_token": self.token}
             )
         return r.json()
 
 
 class Bulb(Device):
-    def __init__(self, id_in: str):
-        super().__init__(id_in)
-        self.attributes = self.update_device_attributes()
-        self.level = [x for x in self.attributes if 'level' in x['name']][0]['currentValue']
-        self.switch = [x for x in self.attributes if 'switch' in x['name']][0]['currentValue']
+    def __init__(self, device_from_hub):
+        super().__init__(device_from_hub)
+        self.switch = [x for x in self.attributes if "switch" in x["name"]][0]['currentValue']
+
 
     def turn_on(self):
         self.send_device_command(command='on')
+
 
     def turn_off(self):
         self.send_device_command(command='off')
