@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 requests = "*"
+hubitatcontrol = {git = "git@github.com:Jelloeater/hubitatcontrol.git", editable = false}
 
 [dev-packages]
 black = "*"
