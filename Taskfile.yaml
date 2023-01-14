@@ -26,6 +26,13 @@ tasks:
             - pipenv run pre-commit uninstall
             - pipenv run pre-commit clean
             - pipenv run pre-commit install
+    clean:
+        env:
+            PIPENV_IGNORE_VIRTUALENVS: 1
+        ignore_error: true
+        cmds:
+            - pipenv uninstall --all
+            - pipenv install --dev
     remove_hooks:
         ignore_error: true
         cmds:
