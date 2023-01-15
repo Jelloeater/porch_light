@@ -8,14 +8,14 @@ console_handler.setFormatter(
 )
 logging.basicConfig(level=logging.DEBUG, handlers=[console_handler])
 import os
-import hubitatcontrol as Hubitat
+from hubitatcontrol import main
 
 
 def test_hub_get():
     host_env = os.getenv("HUBITAT_HOST")
     token_env = os.getenv("HUBITAT_API_TOKEN")
     app_id_env = os.getenv("HUBITAT_API_APP_ID")
-    h = Hubitat.Hub(host=host_env, token=token_env, app_id=app_id_env)
+    h = main.Hub(host=host_env, token=token_env, app_id=app_id_env)
     if h.devices is not None:
         assert True
     else:

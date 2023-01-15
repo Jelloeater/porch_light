@@ -120,7 +120,7 @@
         "hubitatcontrol": {
             "editable": true,
             "git": "https://github.com/Jelloeater/hubitatcontrol.git",
-            "ref": "bbab0b98001ba676c2f9e33e6bad0ec11d00b38d"
+            "ref": "abcf4c05feaf9c553de73cb8aaaceaec94ab6f9e"
         },
         "idna": {
             "hashes": [
