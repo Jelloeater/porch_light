@@ -8,20 +8,19 @@ console_handler.setFormatter(
 )
 logging.basicConfig(level=logging.DEBUG, handlers=[console_handler])
 import os
-from hubitatcontrol import main
+
+import hubitatcontrol.main as hubitat
 
 
-def test_hub_get():
+def check_hub():
     host_env = os.getenv("HUBITAT_HOST")
     token_env = os.getenv("HUBITAT_API_TOKEN")
     app_id_env = os.getenv("HUBITAT_API_APP_ID")
-    h = main.Hub(host=host_env, token=token_env, app_id=app_id_env)
-    if h.devices is not None:
-        assert True
-    else:
-        assert False
+    h = hubitat.Hub(host=host_env, token=token_env, app_id=app_id_env)
+    if h.devices is None:
+        raise Exception("Cannot access Hubitat")
 
 
 if __name__ == "__main__":
     logging.info("SoP")
-    test_hub_get()
+    check_hub()
