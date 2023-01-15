@@ -1,4 +1,5 @@
 version: '3'
+output: 'prefixed'
 includes:
     docker: ./TaskfileDocker.yaml
     deploy: ./TaskfileDeploy.yaml
@@ -6,8 +7,9 @@ includes:
 tasks:
     default:
         cmds:
-            -   task: test
-            -   task: docker:build
+            - task: test
+            - task: clean
+            - task: docker:build
     help:
         silent: true
         cmds:
@@ -26,13 +28,6 @@ tasks:
             - pipenv run pre-commit uninstall
             - pipenv run pre-commit clean
             - pipenv run pre-commit install
-    clean:
-        env:
-            PIPENV_IGNORE_VIRTUALENVS: 1
-        ignore_error: true
-        cmds:
-            - pipenv uninstall --all
-            - pipenv install --dev
     remove_hooks:
         ignore_error: true
         cmds:
@@ -51,10 +46,17 @@ tasks:
         - rm requirements.txt
 
     # Test
+    clean:
+        env:
+            PIPENV_IGNORE_VIRTUALENVS: 1
+        ignore_error: true
+        cmds:
+            - pipenv uninstall --all
+            - pipenv install --dev
     test:
         cmds:
-            -   task: show_secrets
-            -   task: test-run
+            - task: show_secrets
+            - task: test-run
     test-run:
         # We get our secrets from env vars
         # These either get loaded by the python module itself, or via GH Actions
@@ -67,7 +69,7 @@ tasks:
             - pipenv run black .
             - pipenv run mypy --install-types --non-interactive
             - pipenv run pytest --cov --cov-fail-under=75
-    # CICD Stuff
+    # CI/CD Stuff
     github:
         ignore_error: true
         cmds:

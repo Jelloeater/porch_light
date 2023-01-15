@@ -1,4 +1,5 @@
 version: '3'
+output: 'prefixed'
 vars:
     FOLDER: pl_worker
 tasks:
