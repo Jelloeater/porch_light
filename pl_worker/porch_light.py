@@ -7,12 +7,11 @@ console_handler.setFormatter(
     )
 )
 logging.basicConfig(level=logging.DEBUG, handlers=[console_handler])
+import os
+import hubitatcontrol as Hubitat
 
 
 def test_hub_get():
-    import os
-    import hubitatcontrol as Hubitat
-
     host_env = os.getenv("HUBITAT_HOST")
     token_env = os.getenv("HUBITAT_API_TOKEN")
     app_id_env = os.getenv("HUBITAT_API_APP_ID")

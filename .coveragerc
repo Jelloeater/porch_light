@@ -1,5 +1,5 @@
 [run]
-source = porch_light
+source = pl_worker
 omit = porch_light/__main__.py
 
 [report]
