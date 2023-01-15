@@ -1,23 +1,27 @@
 version: '3'
-output: 'prefixed'
 includes:
     docker: ./TaskfileDocker.yaml
     deploy: ./TaskfileDeploy.yaml
+    test:   ./TaskfileTest.yaml
 
 tasks:
     default:
+        desc: Run full dev cycle
         cmds:
             - task: test
-            - task: clean
             - task: docker:build
     help:
+        desc: Displays this help message
         silent: true
         cmds:
             - task --list-all
+            - echo =========== Default Action ===========
+            - task --summary
     deploy:
         - task: deploy:deploy
     # Dev
     setup:
+        desc: Setup Dev environment
         env:
             PIPENV_IGNORE_VIRTUALENVS: 1
         ignore_error: true
@@ -44,31 +48,6 @@ tasks:
         - pip freeze > requirements.txt
         - pipenv install --dev -r requirements.txt
         - rm requirements.txt
-
-    # Test
-    clean:
-        env:
-            PIPENV_IGNORE_VIRTUALENVS: 1
-        ignore_error: true
-        cmds:
-            - pipenv uninstall --all
-            - pipenv install --dev
-    test:
-        cmds:
-            - task: show_secrets
-            - task: test-run
-    test-run:
-        # We get our secrets from env vars
-        # These either get loaded by the python module itself, or via GH Actions
-        silent: false
-        interactive: true
-        env:
-            PIPENV_VERBOSITY: -1
-        cmds:
-            - pipenv run isort --recursive --diff .
-            - pipenv run black .
-            - pipenv run mypy --install-types --non-interactive
-            - pipenv run pytest --cov --cov-fail-under=75
     # CI/CD Stuff
     github:
         ignore_error: true
@@ -79,6 +58,3 @@ tasks:
         -   task: show_secrets
     push:
         -   task: show_secrets
-#        -   task: test
-#        -   task: save_secrets
-#        - pipenv run flake8 # Only be picky during push

@@ -21,7 +21,8 @@
 
 ## Python setup
 ```sh
-task setup; task test;
+task setup; 
+task;
 
 ```
 ## Deploy
