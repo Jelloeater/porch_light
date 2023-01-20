@@ -9,7 +9,7 @@ tasks:
         desc: Build and run Docker image
         dotenv: [ '.env', '{{.ENV}}/.env.', '{{.HOME}}/.env' ] # Setup env vars from file for docker run
         cmds:
-            -  task: build
+            - task: build
             - docker run --env-file .env -d --rm --name {{.IMAGE_NAME}} {{.IMAGE_NAME}}:latest
             - docker logs {{.IMAGE_NAME}}
     # Docker Remote
