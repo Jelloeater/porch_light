@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "porch-light"
+version = "0.1.0"
+description = ""
+authors = ["Jesse Schoepfer <jelloeater@gmail.com>"]
+readme = "README.md"
+packages = [{include = "pl_worker"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = "*"
+hubitatcontrol = {git = "https://github.com/Jelloeater/hubitatcontrol.git"}
+
+[tool.black]
+line-length = 120
+
+
+[tool.poetry.group.dev.dependencies]
+setuptools = "*"
+mypy = "*"
+vulture = "*"
+isort = "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-pycharm = "*"
+python-dotenv = "*"
+pdoc3 = "*"
+radon = "*"
+xenon = "*"
+bandit = "*"
+black = "*"
+typeguard ="*"
+pre-commit = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

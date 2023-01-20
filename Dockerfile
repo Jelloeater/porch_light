@@ -13,20 +13,16 @@ ENV TZ=America/New_York
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Install pipenv and compilation dependencies
-RUN pip install pipenv
 RUN apt-get update && apt-get install -y --no-install-recommends gcc git
+RUN python3 -m pip install pipx
+RUN python3 -m pipx ensurepath
+RUN pipx install poetry
+# Install python dependencies
+COPY pyproject.toml .
+COPY poetry.lock .
+# RUN poetry install
 
-# Install python dependencies in /.venv
-COPY Pipfile .
-COPY Pipfile.lock .
-RUN PIPENV_VENV_IN_PROJECT=1 pipenv install #--skip-lock #--deploy
-
-
-FROM base AS runtime
-
-# Copy virtual env from python-deps stage
-COPY --from=python-deps /.venv /.venv
-ENV PATH="/.venv/bin:$PATH"
+FROM python-deps AS runtime
 
 # Create and switch to a new user
 RUN useradd --create-home appuser

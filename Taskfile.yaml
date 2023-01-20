@@ -10,44 +10,10 @@ tasks:
         cmds:
             - task: test
             - task: docker:build
-    help:
-        desc: Displays this help message
-        silent: true
-        cmds:
-            - task --list-all
-            - echo =========== Default Action ===========
-            - task --summary
-    deploy:
-        - task: deploy:deploy
-    # Dev
-    setup:
-        desc: Setup Dev environment
-        env:
-            PIPENV_IGNORE_VIRTUALENVS: 1
-        ignore_error: true
-        cmds:
-            - pip install pipenv
-            - sudo apt-get install git-secret -y
-            - pipenv install --dev
-            - pipenv run pre-commit uninstall
-            - pipenv run pre-commit clean
-            - pipenv run pre-commit install
-    remove_hooks:
-        ignore_error: true
-        cmds:
-            - pipenv run pre-commit uninstall
-            - pipenv run pre-commit clean
-            - rm .git/hooks -rf
     show_secrets:
         - git secret reveal -f
     save_secrets:
         - git secret hide -m -d
-    update_pipfile:
-        - rm Pipfile
-        - rm Pipfile.lock
-        - pip freeze > requirements.txt
-        - pipenv install --dev -r requirements.txt
-        - rm requirements.txt
     # CI/CD Stuff
     github:
         ignore_error: true

@@ -2,8 +2,7 @@ version: '3'
 vars:
     FOLDER: pl_worker
 tasks:
-
-    deploy:
+    default:
         desc: Deploy to remote docker host
         cmds:
             - rsync -av --delete --filter=':- .gitignore' . root@docker:/{{.FOLDER}}/

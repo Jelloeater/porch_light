@@ -1,32 +1,53 @@
 version: '3'
-includes:
-    docker: ./TaskfileDocker.yaml
+vars:
+    BUILD_DIR: pl_worker
 
 tasks:
     default:
-        desc: Run all the tests
-        cmds:
-            - git secret reveal -f
-            - task: clean
-            - task: run
+        - poetry install
+        - task: format
+        - task: test
+        - task: build
+    setup:
+        - python3 -m pip install pipx
+        - python3 -m pipx ensurepath
+        - pipx install poetry
     clean:
-        desc: Clean pipenv
-        env:
-            PIPENV_IGNORE_VIRTUALENVS: 1
-        ignore_error: true
-        cmds:
-            - pipenv uninstall --all
-            - pipenv install --dev
-    run:
-        summary:
-            We get our secrets from env vars. These either get loaded by the python module itself, or via GH Actions
+        - rm -rf dist
+        - poetry cache clear _default_cache --all  --no-interaction
+        - poetry cache clear PyPI --all  --no-interaction
+        - poetry check
+    format:
+        - poetry run isort --atomic {{.BUILD_DIR}}
+        - poetry run black {{.BUILD_DIR}} --color #--diff
+    test:
         silent: false
         interactive: true
-        env:
-            PIPENV_VERBOSITY: -1
         cmds:
-            - pipenv run isort --recursive --diff .
-            - pipenv run black .
-            - pipenv run mypy --install-types --non-interactive
-            - pipenv run pytest --cov --cov-fail-under=75
-#        - pipenv run flake8 # Only be picky during push
+            - task: format
+            - poetry run bandit --silent -r {{.BUILD_DIR}}
+            - poetry run vulture --min-confidence 100 {{.BUILD_DIR}}
+            - poetry run xenon --max-absolute B --max-modules B --max-average B {{.BUILD_DIR}}
+            - poetry run pytest --cov --cov-fail-under=80 #--typeguard-packages={{.BUILD_DIR}}
+    docs:
+        - rm -rf docs
+        - poetry run pdoc3 {{.BUILD_DIR}} -o docs -f
+        # - poetry run pyreverse {{.BUILD_DIR}} -d docs
+        - git add docs
+    commit:
+        - task: format
+        - task: docs
+    build:
+        env:
+            PIPENV_IGNORE_VIRTUALENVS: 1
+        deps: [docs, clean]
+        cmds:
+            - poetry build
+    install-hooks:
+        cmds:
+            - poetry run pre-commit install
+    remove-hooks:
+        ignore_error: true
+        cmds:
+            - poetry run pre-commit uninstall
+            - rm .git/hooks -rf
