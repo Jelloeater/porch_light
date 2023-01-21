@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "porch-light"
+name = "pl_worker"
 version = "0.1.0"
 description = ""
 authors = ["Jesse Schoepfer <jelloeater@gmail.com>"]
@@ -24,22 +24,15 @@ force_grid_wrap = 0
 use_parentheses = "True"
 line_length = 120
 
-[tool.mypy]
-files="pl_worker,test"
-ignore_missing_imports=true
-implicit_optional = "True"
 
-[tool.poetry.group.test.dependencies]
+[tool.poetry.group.dev.dependencies]
 setuptools = "*"
 pytest = "*"
 pytest-cov = "*"
 python-dotenv = "*"
-
-[tool.poetry.group.dev.dependencies]
 platformdirs = "*"
 pre-commit = "*"
 pytest-pycharm = "*"
-mypy = "*"
 vulture = "*"
 isort = "*"
 pdoc3 = "*"
@@ -47,7 +40,6 @@ radon = "*"
 xenon = "*"
 bandit = "*"
 black = "*"
-typeguard ="*"
 
 [build-system]
 requires = ["poetry-core"]
