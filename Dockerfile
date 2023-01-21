@@ -8,14 +8,14 @@ ENV PYTHONFAULTHANDLER 1
 ENV PYTHONHASHSEED=random
 ENV PYTHONUNBUFFERED=1
 
-FROM base AS python-deps
+#FROM base AS python-deps
 WORKDIR /app
 
 # Set timezone
 ENV TZ=America/New_York
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # Install python dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends gcc git
+RUN apt-get update && apt-get install -y --no-install-recommends gcc git tree
 RUN python -m venv venv
 RUN pip install poetry
 COPY pyproject.toml poetry.lock ./
@@ -23,17 +23,18 @@ RUN poetry config virtualenvs.create false
 RUN poetry install --no-interaction --no-root --only main
 
 
-FROM base AS runtime
-WORKDIR /app
+#FROM base AS runtime
+#WORKDIR /app
 
 # Install application into container
 # Don't forget to check the .dockerignore
-COPY --from=python-deps /app/venv venv
+#COPY --from=python-deps /app/venv venv
 COPY . .
 
 # Create and switch to a new user
 RUN useradd --create-home appuser
 USER appuser
-RUN ls -a -R
+RUN tree
 # Run the executable
+RUN pip freeze
 CMD [ "python", "pl_worker/porch_light.py" ]
