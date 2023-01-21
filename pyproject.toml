@@ -4,7 +4,6 @@ version = "0.1.0"
 description = ""
 authors = ["Jesse Schoepfer <jelloeater@gmail.com>"]
 readme = "README.md"
-packages = [{include = "pl_worker"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -37,6 +36,7 @@ pytest-cov = "*"
 python-dotenv = "*"
 
 [tool.poetry.group.dev.dependencies]
+platformdirs = "*"
 pre-commit = "*"
 pytest-pycharm = "*"
 mypy = "*"

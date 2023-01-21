@@ -1,26 +1,81 @@
 version: '3'
 includes:
-    docker: ./TaskfileDocker.yaml
     deploy: ./TaskfileDeploy.yaml
-    test:   ./TaskfileTest.yaml
 
+vars:
+    BUILD_DIR: pl_worker
+    IMAGE_NAME: pl_worker
+    DOCKER_FILE: Dockerfile
 tasks:
     default:
-        desc: Run full dev cycle
+        silent: true
+        interactive: false
         cmds:
+            - poetry install
+            - task: format
             - task: test
-            - task: docker:build
+    setup:
+        - python3 -m pip install pipx
+        - python3 -m pipx ensurepath
+        - pipx install poetry
+        - task: install-hooks
+    clean:
+        - rm -rf dist
+        - rm -rf .mypy_cache
+        - poetry cache clear _default_cache --all  --no-interaction
+        - poetry cache clear PyPI --all  --no-interaction
+        - poetry check
+        - py3clean .
+    format:
+        silent: true
+        interactive: false
+        cmds:
+            - poetry run isort --atomic {{.BUILD_DIR}}
+            - poetry run black {{.BUILD_DIR}} --color #--diff
+    test:
+        silent: true
+        interactive: false
+        cmds:
+            - poetry run bandit --silent -r {{.BUILD_DIR}}
+            - poetry run vulture --min-confidence 100 {{.BUILD_DIR}}
+            - poetry run xenon --max-absolute B --max-modules B --max-average B {{.BUILD_DIR}}
+#            - poetry run mypy --install-types --non-interactive
+#            - poetry run mypy {{.BUILD_DIR}} # Little too aggressive
+            - poetry run pytest --cov --cov-fail-under=80 #--typeguard-packages={{.BUILD_DIR}} # Leave typeguard off for now
+    docs:
+        - rm -rf docs
+        - poetry run pdoc3 {{.BUILD_DIR}} -o docs -f
+        # - poetry run pyreverse {{.BUILD_DIR}} -d docs # Getting module import error
+        - git add docs
+    commit:
+        - task: format
+        - task: docs
+    build:
+        env:
+            PIPENV_IGNORE_VIRTUALENVS: 1
+        deps: [docs, clean]
+        cmds:
+            - poetry build
+    install-hooks:
+        cmds:
+            - poetry run pre-commit install
+    remove-hooks:
+        ignore_error: true
+        cmds:
+            - poetry run pre-commit uninstall
+            - rm .git/hooks -rf
+    docker:
+        - task: clean
+        - docker build . -t {{.IMAGE_NAME}}:latest -f {{.DOCKER_FILE}}
+        - docker run --env-file .env --rm --name {{.IMAGE_NAME}} {{.IMAGE_NAME}}:latest
+    docker-deploy:
+        - task: clean
+        - docker rm -f {{.IMAGE_NAME}}
+        - docker build . -t {{.IMAGE_NAME}}:latest -f {{.DOCKER_FILE}}
+        - docker run --env-file .env -d --name {{.IMAGE_NAME}} {{.IMAGE_NAME}}:latest
+        - docker logs {{.IMAGE_NAME}}
+    docker-purge: docker system prune -a -f --volumes
     show_secrets:
         - git secret reveal -f
     save_secrets:
         - git secret hide -m -d
-    # CI/CD Stuff
-    github:
-        ignore_error: true
-        cmds:
-            - task: test:test
-    commit:
-        -   task: save_secrets
-        -   task: show_secrets
-    push:
-        -   task: show_secrets

@@ -8,7 +8,7 @@ tasks:
             - rsync -av --delete --filter=':- .gitignore' . root@docker:/{{.FOLDER}}/
             - git secret reveal -f
             - rsync .env root@docker:/{{.FOLDER}}/.env
-            - ssh root@docker 'cd /{{.FOLDER}}/; task docker:run'
+            - ssh root@docker 'cd /{{.FOLDER}}/; task setup; task docker-deploy;'
             - rsync -av --delete --filter=':- .gitignore' . root@docker:/{{.FOLDER}}/
     kill: ssh root@docker 'cd /{{.FOLDER}}/; task docker:kill'
     logs: ssh root@docker 'cd /{{.FOLDER}}/; task docker:logs'

@@ -9,10 +9,3 @@ repos:
     entry: task commit
     pass_filenames: false
     verbose: true
-  - id: task-push
-    name: Task Commit
-    stages: [push]
-    language: system
-    entry: task push
-    pass_filenames: false
-    verbose: true
