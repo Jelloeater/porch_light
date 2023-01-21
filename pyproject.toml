@@ -11,26 +11,43 @@ python = "^3.10"
 requests = "*"
 hubitatcontrol = {git = "https://github.com/Jelloeater/hubitatcontrol.git"}
 
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = "test/"
+
 [tool.black]
 line-length = 120
 
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = "True"
+force_grid_wrap = 0
+use_parentheses = "True"
+line_length = 120
+
+[tool.mypy]
+files="pl_worker,test"
+ignore_missing_imports=true
+implicit_optional = "True"
+
+[tool.poetry.group.test.dependencies]
+setuptools = "*"
+pytest = "*"
+pytest-cov = "*"
+python-dotenv = "*"
 
 [tool.poetry.group.dev.dependencies]
-setuptools = "*"
+pre-commit = "*"
+pytest-pycharm = "*"
 mypy = "*"
 vulture = "*"
 isort = "*"
-pytest = "*"
-pytest-cov = "*"
-pytest-pycharm = "*"
-python-dotenv = "*"
 pdoc3 = "*"
 radon = "*"
 xenon = "*"
 bandit = "*"
 black = "*"
 typeguard ="*"
-pre-commit = "*"
 
 [build-system]
 requires = ["poetry-core"]
