@@ -11,19 +11,17 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - run: sudo snap install task --classic
-            - run: sudo apt-get update && apt-get install -y --no-install-recommends gcc git
             - uses: actions/checkout@v2
-            - uses: actions/setup-python@v4
-              with:
-                python-version: '3.10'
-                cache: 'poetry'
-
             - name: Install Poetry
               uses: snok/install-poetry@v1
               with:
                   virtualenvs-create: true
                   virtualenvs-in-project: true
                   installer-parallel: true
+            - uses: actions/setup-python@v4
+              with:
+                python-version: '3.10'
+                cache: 'poetry'
 
             - name: Load cached venv
               id: cached-poetry-dependencies
