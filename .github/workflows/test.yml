@@ -11,7 +11,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - run: sudo snap install task --classic
-            - run: sudo apt-get update && apt-get install -y --no-install-recommends gcc git tree
+            - run: sudo apt-get update && apt-get install -y --no-install-recommends gcc git
             - uses: actions/checkout@v2
             - uses: actions/setup-python@v4
               with:
