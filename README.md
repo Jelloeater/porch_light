@@ -18,7 +18,7 @@
 Install Go-Task --> <https://taskfile.dev/installation/>
 
 ```shell
-task setup
-task
-task deploy
+task setup # Setup 
+task # Test
+task deploy # Deploy
 ```
