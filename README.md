@@ -9,9 +9,6 @@
 - At end of run, check if light is still on
 - If light is off, go back to waiting for hook
 
-- <https://pypi.org/project/extcolors/>
-- <https://python-pillow.org/>
-- <https://gist.github.com/yunjey/14e3a069ad2aa-> <https://python-pillow.org/3adf72dee93a53117d6>
 
 **Setup**
 

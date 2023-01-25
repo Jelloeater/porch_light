@@ -4,11 +4,22 @@ version = "0.1.0"
 description = ""
 authors = ["Jesse Schoepfer <jelloeater@gmail.com>"]
 readme = "README.md"
+#homepage = "https://github.com/Jelloeater/xx"
+#keywords = ["hubitat", "makerapi","requests"]
+#classifiers = ["Development Status :: 5 - Production/Stable",
+# "Environment :: No Input/Output (Daemon)",
+# "Topic :: Home Automation",
+# "Intended Audience :: Developers",
+# "Operating System :: OS Independent",
+#]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-requests = "*"
+
 hubitatcontrol = {git = "https://github.com/Jelloeater/hubitatcontrol.git"}
+extcolors = "^1.0.0"
+google-images-search = "^1.4.6"
+
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
