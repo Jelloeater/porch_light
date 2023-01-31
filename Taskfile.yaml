@@ -36,6 +36,7 @@ tasks:
     commit:
         - poetry run isort --atomic {{.BUILD_DIR}}
         - poetry run black {{.BUILD_DIR}}
+        - poetry update
     docker:
         - task: deploy
     docker-purge: docker system prune -a -f --volumes

@@ -17,6 +17,7 @@ def check_hub():
     h = Hub(host=host_env, token=token_env, app_id=app_id_env)
     if h.devices is None:
         raise Exception("Cannot access Hubitat")
+    return h
 
 
 if __name__ == "__main__":
