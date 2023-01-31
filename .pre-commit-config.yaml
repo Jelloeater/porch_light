@@ -2,10 +2,10 @@
 repos:
 - repo: local
   hooks:
-  - id: task-test
-    name: Task Commit
+  - id: commit
+    name: Commit
     stages: [commit]
     language: system
     entry: task commit
     pass_filenames: false
-    verbose: true
+    verbose: false
