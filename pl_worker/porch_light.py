@@ -1,8 +1,5 @@
 import logging.handlers
 
-import uvicorn
-from fastapi import FastAPI
-
 console_handler = logging.StreamHandler()
 console_handler.setFormatter(
     logging.Formatter("[%(asctime)s] [%(levelname)8s] --- %(message)s (%(filename)s:%(funcName)s():%(lineno)s)")
@@ -10,7 +7,6 @@ console_handler.setFormatter(
 logging.basicConfig(level=logging.DEBUG, handlers=[console_handler])
 import os
 
-import webserver
 from hubitatcontrol import Hub
 
 
@@ -27,4 +23,3 @@ def check_hub():
 if __name__ == "__main__":
     logging.info("SoP")
     check_hub()
-    webserver.start_server()

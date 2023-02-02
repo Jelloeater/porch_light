@@ -16,7 +16,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 
-hubitatcontrol = {git = "https://github.com/Jelloeater/hubitatcontrol.git"}
+hubitatcontrol = {git = "https://github.com/Jelloeater/hubitatcontrol.git",branch = "feat/src_refactor" }
 extcolors = "^1.0.0"
 google-images-search = "^1.4.6"
 fastapi ="*"
