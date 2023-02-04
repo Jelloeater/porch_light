@@ -38,6 +38,8 @@ line_length = 120
 
 
 [tool.poetry.group.dev.dependencies]
+asynctest = "*"
+aiohttp = "*"
 httpx = "*"
 setuptools = "*"
 pytest = "*"

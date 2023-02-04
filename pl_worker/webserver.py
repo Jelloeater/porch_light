@@ -1,12 +1,14 @@
 import uvicorn
 from fastapi import FastAPI
 
-app = FastAPI()
 
+class web_app:
+    def __init__(self):
+        self.app = FastAPI()
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+        @self.app.get("/")
+        async def root():
+            return {"message": "Hello World"}
 
 
 def start_server():
@@ -16,7 +18,7 @@ def start_server():
     s.connect(("8.8.8.8", 80))
     local_nic = s.getsockname()[0]
     s.close()
-    uvicorn.run(app, host=local_nic, port=8080)
+    uvicorn.run(web_app().app, host=local_nic, port=8080)
 
 
 if __name__ == "__main__":
