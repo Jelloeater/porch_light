@@ -15,12 +15,12 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-
-hubitatcontrol = {git = "https://github.com/Jelloeater/hubitatcontrol.git",branch = "feat/src_refactor" }
+hubitatcontrol = {git = "https://github.com/Jelloeater/hubitatcontrol.git"}
 extcolors = "^1.0.0"
 google-images-search = "^1.4.6"
 fastapi ="*"
 uvicorn ={version="*", extras = ["standard"]}
+
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
@@ -38,6 +38,7 @@ line_length = 120
 
 
 [tool.poetry.group.dev.dependencies]
+httpx = "*"
 setuptools = "*"
 pytest = "*"
 pytest-cov = "*"
@@ -53,6 +54,7 @@ xenon = "*"
 bandit = "*"
 black = "*"
 pytest-xprocess ="*"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
