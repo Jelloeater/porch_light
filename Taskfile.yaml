@@ -38,6 +38,7 @@ tasks:
     commit:
         - poetry run isort --atomic {{.BUILD_DIR}}
         - poetry run black {{.BUILD_DIR}}
+        - poetry run black test
     docker:
         - task: deploy
     docker-purge: docker system prune -a -f --volumes
@@ -45,3 +46,4 @@ tasks:
         - git secret reveal -f
     save_secrets:
         - git secret hide -m -d
+    start_webserver: poetry run pl_worker/webserver.py

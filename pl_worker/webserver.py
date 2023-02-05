@@ -18,19 +18,26 @@ class web_app:
             return {h}
 
 
-def start_server():
-    import socket
+class Server:
+    port = 8080
 
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))
-    local_nic = s.getsockname()[0]
-    s.close()
-    u = uvicorn
-    c = u.config.Config(app=web_app().app, host=local_nic, port=8080)
-    w = u.Server(c)
-    w.run()
-    w.force_exit = True
+    @classmethod
+    def local_nic(cls):
+        import socket
+
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        nic = s.getsockname()[0]
+        s.close()
+        return nic
+
+    @classmethod
+    def start_server(cls):
+        u = uvicorn
+        c = u.config.Config(app=web_app().app, host=cls.local_nic(), port=cls.port)
+        w = u.Server(c)
+        w.run()
 
 
 if __name__ == "__main__":
-    start_server()
+    Server.start_server()
