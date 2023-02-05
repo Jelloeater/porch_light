@@ -1,6 +1,8 @@
 import uvicorn
 from fastapi import FastAPI
 
+import pl_worker.porch_light
+
 
 class web_app:
     def __init__(self):
@@ -8,7 +10,12 @@ class web_app:
 
         @self.app.get("/")
         async def root():
-            return {"message": "Hello World"}
+            return {self.app.docs_url}
+
+        @self.app.get("/check-hub")
+        async def root():
+            h = pl_worker.porch_light.check_hub()
+            return {h}
 
 
 def start_server():

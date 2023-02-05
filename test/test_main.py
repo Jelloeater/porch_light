@@ -1,14 +1,9 @@
-from threading import Thread
-from time import sleep
+import os
 
-import pytest
-import uvicorn
 from dotenv import load_dotenv
 import pl_worker.porch_light
 import pl_worker.webserver
 from fastapi.testclient import TestClient
-
-import webserver
 
 load_dotenv()
 # Webserver test client
@@ -22,4 +17,9 @@ def test_check_hub():
 def test_read_main():
     response = client.get("/")
     assert response.status_code == 200
-    assert response.json() == {"message": "Hello World"}
+
+
+def test_hub_api():
+    response = client.get("/check-hub")
+    assert response.status_code == 200
+    assert response.json()[0]['token'] == os.environ.get('HUBITAT_API_TOKEN')
