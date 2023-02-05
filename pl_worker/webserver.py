@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 
-import pl_worker.porch_light
+import porch_light
 
 
 class web_app:
@@ -14,7 +14,7 @@ class web_app:
 
         @self.app.get("/check-hub")
         async def root():
-            h = pl_worker.porch_light.check_hub()
+            h = porch_light.check_hub()
             return {h}
 
 
