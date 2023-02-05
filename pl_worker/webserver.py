@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 
-import porch_light
+import pl_worker.porch_light as porch_light
 
 
 class web_app:
