@@ -25,7 +25,11 @@ def start_server():
     s.connect(("8.8.8.8", 80))
     local_nic = s.getsockname()[0]
     s.close()
-    uvicorn.run(web_app().app, host=local_nic, port=8080)
+    u = uvicorn
+    c = u.config.Config(app=web_app().app, host=local_nic, port=8080)
+    w = u.Server(c)
+    w.run()
+    w.force_exit = True
 
 
 if __name__ == "__main__":
