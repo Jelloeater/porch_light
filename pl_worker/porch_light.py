@@ -1,13 +1,13 @@
 import logging.handlers
+import os
+
+from hubitatcontrol import Hub
 
 console_handler = logging.StreamHandler()
 console_handler.setFormatter(
     logging.Formatter("[%(asctime)s] [%(levelname)8s] --- %(message)s (%(filename)s:%(funcName)s():%(lineno)s)")
 )
 logging.basicConfig(level=logging.DEBUG, handlers=[console_handler])
-import os
-
-from hubitatcontrol import Hub
 
 
 def check_hub():

@@ -36,8 +36,15 @@ tasks:
             - poetry run xenon --max-absolute B --max-modules B --max-average B {{.BUILD_DIR}} # Check complexity
             - poetry run pytest --cov --cov-fail-under=80 # Run test
     commit:
-        - poetry run isort --atomic . # Sort imports
-        - poetry run black . # Format code
+        silent: true
+        interactive: false
+        cmds:
+            - poetry run isort --atomic . # Sort imports
+            - poetry run black . # Format code
+            - rm -rf docs
+            - poetry run pdoc3 {{.BUILD_DIR}} -o docs -f # Doc gen
+            - poetry run pyreverse {{.BUILD_DIR}} -d docs # Diagram gen
+            - git add docs
     docker-purge: docker system prune -a -f --volumes
     show_secrets:
         - git secret reveal -f

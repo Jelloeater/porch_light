@@ -1,0 +1,8 @@
+digraph "packages" {
+rankdir=BT
+charset="utf-8"
+"pl_worker" [color="black", label=<pl_worker>, shape="box", style="solid"];
+"pl_worker.porch_light" [color="black", label=<pl_worker.porch_light>, shape="box", style="solid"];
+"pl_worker.webserver" [color="black", label=<pl_worker.webserver>, shape="box", style="solid"];
+"pl_worker.webserver" -> "pl_worker.porch_light" [arrowhead="open", arrowtail="none"];
+}
