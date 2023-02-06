@@ -1,14 +1,10 @@
 version: '3'
-includes:
-    deploy: ./TaskfileDeploy.yaml
-
 vars:
     BUILD_DIR: pl_worker
     IMAGE_NAME: pl_worker
     DOCKER_FILE: Dockerfile
 tasks:
-    docker:
-        - task: deploy
+# Local Dev
     default:
         silent: true
         interactive: false
@@ -59,3 +55,14 @@ tasks:
     start_docker:
         cmds:
             - docker-compose up # HTTP bind to 80
+# Docker
+    docker_deploy:
+        desc: Deploy to remote docker host
+        cmds:
+            - rsync -av --delete --filter=':- .gitignore' . root@docker:/{{.FOLDER}}/
+            - git secret reveal -f
+            - rsync .env root@docker:/{{.FOLDER}}/.env
+            - ssh root@docker 'cd /{{.FOLDER}}/; task setup; task docker;' # Setup Env on remote box
+            - rsync -av --delete --filter=':- .gitignore' . root@docker:/{{.FOLDER}}/
+    docker: # These are the commands that get run remotely from above
+        - docker-compose up -d
