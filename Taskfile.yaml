@@ -14,8 +14,8 @@ tasks:
         interactive: false
         cmds:
             - poetry install
-            - task: test
             - task: commit
+            - task: test
     setup:
         - python3 -m pip install pipx
         - python3 -m pipx ensurepath
@@ -31,14 +31,13 @@ tasks:
         silent: true
         interactive: false
         cmds:
-            - poetry run bandit --silent -r {{.BUILD_DIR}}
-            - poetry run vulture --min-confidence 100 {{.BUILD_DIR}}
-            - poetry run xenon --max-absolute B --max-modules B --max-average B {{.BUILD_DIR}}
-            - poetry run pytest --cov --cov-fail-under=80
+            - poetry run bandit --silent -r {{.BUILD_DIR}} # Check for security issues
+            - poetry run vulture --min-confidence 100 {{.BUILD_DIR}} # Look for dead code
+            - poetry run xenon --max-absolute B --max-modules B --max-average B {{.BUILD_DIR}} # Check complexity
+            - poetry run pytest --cov --cov-fail-under=80 # Run test
     commit:
-        - poetry run isort --atomic {{.BUILD_DIR}}
-        - poetry run black {{.BUILD_DIR}}
-        - poetry run black test
+        - poetry run isort --atomic . # Sort imports
+        - poetry run black . # Format code
     docker-purge: docker system prune -a -f --volumes
     show_secrets:
         - git secret reveal -f

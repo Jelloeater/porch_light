@@ -3,9 +3,10 @@ from time import sleep
 
 import requests
 from dotenv import load_dotenv
+from fastapi.testclient import TestClient
+
 import pl_worker.porch_light as pl
 import pl_worker.webserver as web
-from fastapi.testclient import TestClient
 
 load_dotenv()
 # Webserver test client
