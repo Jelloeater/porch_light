@@ -8,6 +8,13 @@ Functions
 `check_hub()`
 :   
 
-    
-`download_photo()`
-:
+Classes
+-------
+
+`MainLogic()`
+:   
+
+    ### Methods
+
+    `download_photo_from_month(self)`
+    :

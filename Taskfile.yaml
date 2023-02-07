@@ -11,6 +11,7 @@ tasks:
         cmds:
             - poetry install
             - task: commit
+            - task: docs
             - task: test
     setup:
         - python3 -m pip install pipx
@@ -37,6 +38,10 @@ tasks:
         cmds:
             - poetry run isort --atomic . # Sort imports
             - poetry run black . # Format code
+    docs:
+        silent: true
+        interactive: false
+        cmds:
             - rm -rf docs
             - poetry run pdoc3 {{.BUILD_DIR}} -o docs -f # Doc gen
             - poetry run pyreverse {{.BUILD_DIR}} -d docs # Diagram gen

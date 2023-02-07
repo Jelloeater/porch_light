@@ -5,14 +5,19 @@ import requests
 from dotenv import load_dotenv
 from fastapi.testclient import TestClient
 
+import pl_worker.porch_light
 import pl_worker.porch_light as pl
 import pl_worker.webserver as web
 
 load_dotenv()
 
 
-def test_check_hub():
-    assert pl.check_hub().devices is not None
+class TestPL:
+    def test_check_hub():
+        assert pl.check_hub().devices is not None
+
+    def test_dl(self):
+        p = pl_worker.porch_light.MainLogic()
 
 
 class Test_API_full:
