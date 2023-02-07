@@ -20,6 +20,10 @@ def check_hub():
     return h
 
 
+def download_photo():
+    pass
+
+
 if __name__ == "__main__":
     logging.info("SoP")
     check_hub()

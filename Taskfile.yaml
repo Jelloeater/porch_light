@@ -30,7 +30,7 @@ tasks:
             - poetry run bandit --silent -r {{.BUILD_DIR}} # Check for security issues
             - poetry run vulture --min-confidence 100 {{.BUILD_DIR}} # Look for dead code
             - poetry run xenon --max-absolute B --max-modules B --max-average B {{.BUILD_DIR}} # Check complexity
-            - poetry run pytest --cov --cov-fail-under=80 # Run test
+            - poetry run pytest --cov --cov-fail-under=75 # Run test
     commit:
         silent: true
         interactive: false

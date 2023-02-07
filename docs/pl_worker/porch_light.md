@@ -6,4 +6,8 @@ Functions
 
     
 `check_hub()`
+:   
+
+    
+`download_photo()`
 :
