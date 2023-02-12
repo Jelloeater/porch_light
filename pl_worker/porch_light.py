@@ -57,17 +57,24 @@ class MainLogic:
                 return "christmas tree presents"
 
     def download_photo_from_month(self):
+        output_path = pathlib.Path(__file__).parent.resolve()
         b = bing.Bing(
             query=self.keywords,
             limit=1,
-            output_dir=pathlib.Path(__file__).parent.resolve(),
+            output_dir=output_path,
             adult="None",
             timeout=5,
             filter="photo",
             verbose=True,
         )
         b.run()
-        return os.path.exists("Image_1.jpg")
+        image_path = os.path.join(output_path, "Image_1.jpg")
+        if not os.path.exists(image_path):
+            raise ValueError("File not downloaded")
+        return image_path
+
+    def get_colors(self):
+        pass
 
 
 # TODO Get colors from photo

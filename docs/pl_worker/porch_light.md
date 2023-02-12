@@ -23,3 +23,6 @@ Classes
 
     `download_photo_from_month(self)`
     :
+
+    `get_colors(self)`
+    :
