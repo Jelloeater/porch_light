@@ -17,6 +17,7 @@ class TestPL:
 
     def test_dl(self):
         p = pl_worker.porch_light.MainLogic()
+        assert p.download_photo_from_month() is not None
 
 
 class Test_API_full:

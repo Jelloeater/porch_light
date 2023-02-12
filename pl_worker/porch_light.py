@@ -1,7 +1,9 @@
 import datetime
 import logging.handlers
 import os
+import pathlib
 
+from bing_image_downloader import bing
 from hubitatcontrol import Hub
 
 console_handler = logging.StreamHandler()
@@ -26,7 +28,8 @@ class MainLogic:
         self.download_photo_from_month()
 
     @property
-    def keywords(self):
+    def keywords(self):  # pragma: no cover
+        # No need to check for coverage
         match datetime.datetime.now().month:
             case 1:
                 return "snow winter cold"
@@ -54,17 +57,17 @@ class MainLogic:
                 return "christmas tree presents"
 
     def download_photo_from_month(self):
-        import pathlib
-
-        pwd = pathlib.Path(__file__).parent.resolve()
-
-        from bing_image_downloader import bing
-
-        x = self.keywords
-        bing = bing.Bing(
-            query=self.keywords, limit=1, output_dir=pwd, adult="None", timeout=5, filter="clip", verbose=True
+        b = bing.Bing(
+            query=self.keywords,
+            limit=1,
+            output_dir=pathlib.Path(__file__).parent.resolve(),
+            adult="None",
+            timeout=5,
+            filter="photo",
+            verbose=True,
         )
-        bing.run()
+        b.run()
+        return os.path.exists("Image_1.jpg")
 
 
 # TODO Get colors from photo
@@ -77,4 +80,4 @@ class MainLogic:
 if __name__ == "__main__":
     logging.info("SoP")
     check_hub()
-    m = MainLogic()
+    MainLogic()

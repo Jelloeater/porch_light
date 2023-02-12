@@ -16,7 +16,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 hubitatcontrol = {git = "https://github.com/Jelloeater/hubitatcontrol.git"}
-extcolors = "^1.0.0"
+extcolors = "*"
 bing-image-downloader = "*"
 fastapi ="*"
 uvicorn ={version="*", extras = ["standard"]}

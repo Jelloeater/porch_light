@@ -14,6 +14,11 @@ Classes
 `MainLogic()`
 :   
 
+    ### Instance variables
+
+    `keywords`
+    :
+
     ### Methods
 
     `download_photo_from_month(self)`

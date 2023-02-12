@@ -23,14 +23,14 @@ trio = ["trio (>=0.16,<0.22)"]
 
 [[package]]
 name = "astroid"
-version = "2.14.1"
+version = "2.14.2"
 description = "An abstract syntax tree for Python with inference support."
 category = "dev"
 optional = false
 python-versions = ">=3.7.2"
 files = [
-    {file = "astroid-2.14.1-py3-none-any.whl", hash = "sha256:23c718921acab5f08cbbbe9293967f1f8fec40c336d19cd75dc12a9ea31d2eb2"},
-    {file = "astroid-2.14.1.tar.gz", hash = "sha256:bd1aa4f9915c98e8aaebcd4e71930154d4e8c9aaf05d35ac0a63d1956091ae3f"},
+    {file = "astroid-2.14.2-py3-none-any.whl", hash = "sha256:0e0e3709d64fbffd3037e4ff403580550f14471fd3eaae9fa11cc9a5c7901153"},
+    {file = "astroid-2.14.2.tar.gz", hash = "sha256:a3cf9f02c53dd259144a7e8f3ccd75d67c9a8c716ef183e0c1f291bc5d7bb3cf"},
 ]
 
 [package.dependencies]
@@ -82,6 +82,18 @@ stevedore = ">=1.20.0"
 test = ["beautifulsoup4 (>=4.8.0)", "coverage (>=4.5.4)", "fixtures (>=3.0.0)", "flake8 (>=4.0.0)", "pylint (==1.9.4)", "stestr (>=2.5.0)", "testscenarios (>=0.5.0)", "testtools (>=2.3.0)", "toml"]
 toml = ["toml"]
 yaml = ["PyYAML"]
+
+[[package]]
+name = "bing"
+version = "0.31"
+description = "Python library for searching entites in Bing"
+category = "main"
+optional = false
+python-versions = "~=3.6"
+files = [
+    {file = "bing-0.31-py3-none-any.whl", hash = "sha256:8a44bb338c2a595be746835d151ba912a85e524fc46cc532a38275b2bc44bfba"},
+    {file = "bing-0.31.tar.gz", hash = "sha256:c8d35b2a13b1419f2f0f62528e74f6f9f35a09df7916c8a330619a670cc458e7"},
+]
 
 [[package]]
 name = "bing-image-downloader"
@@ -1819,4 +1831,4 @@ requests = ">=2.0,<3.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "a231c483bbbf985e495baa222691671a62c577d06a99186c42eb0654413c4c65"
+content-hash = "ad67898775960fa738a5cb917b8737c711ea6f820b040274e18f0326f244857c"
