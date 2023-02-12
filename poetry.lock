@@ -84,18 +84,6 @@ toml = ["toml"]
 yaml = ["PyYAML"]
 
 [[package]]
-name = "bing"
-version = "0.31"
-description = "Python library for searching entites in Bing"
-category = "main"
-optional = false
-python-versions = "~=3.6"
-files = [
-    {file = "bing-0.31-py3-none-any.whl", hash = "sha256:8a44bb338c2a595be746835d151ba912a85e524fc46cc532a38275b2bc44bfba"},
-    {file = "bing-0.31.tar.gz", hash = "sha256:c8d35b2a13b1419f2f0f62528e74f6f9f35a09df7916c8a330619a670cc458e7"},
-]
-
-[[package]]
 name = "bing-image-downloader"
 version = "1.1.2"
 description = "Python library to download bulk images from Bing.com"
@@ -1831,4 +1819,4 @@ requests = ">=2.0,<3.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "ad67898775960fa738a5cb917b8737c711ea6f820b040274e18f0326f244857c"
+content-hash = "f79d092320d146f9f8c8c16f2562810a6f32903c3aebe4c60b09f195881776cb"

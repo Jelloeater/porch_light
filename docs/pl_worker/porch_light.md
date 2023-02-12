@@ -21,6 +21,9 @@ Classes
 
     ### Methods
 
+    `change_light_color(self)`
+    :
+
     `download_photo_from_month(self)`
     :
 

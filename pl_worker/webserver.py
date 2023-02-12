@@ -17,6 +17,11 @@ class web_app:
             h = porch_light.check_hub()
             return {h}
 
+        @self.app.get("/start")
+        async def root():
+            h = porch_light.MainLogic()
+            return {h}
+
 
 class Server:
     port = 8080

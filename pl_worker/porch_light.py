@@ -74,17 +74,11 @@ class MainLogic:
         return image_path
 
     def get_colors(self):
+        # TODO Get colors from photo
         pass
 
-
-# TODO Get colors from photo
-# TODO Set light to colors from photo ONLY if on
-# TODO Listen for hook indicating time to change color
-# TODO At end of run, check if light is still on
-# TODO If light is off, go back to waiting for hook
-
-
-if __name__ == "__main__":
-    logging.info("SoP")
-    check_hub()
-    MainLogic()
+    def change_light_color(self):
+        # TODO Set light to colors from photo ONLY if on
+        # TODO At end of run, check if light is still on, If light is off, exit loop
+        # TODO
+        pass
