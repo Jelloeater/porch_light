@@ -19,7 +19,7 @@ class web_app:
 
         @self.app.get("/start")
         async def root():
-            h = porch_light.MainLogic()
+            h = porch_light.ColorPalate()
             return {h}
 
 

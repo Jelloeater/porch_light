@@ -23,12 +23,9 @@ def check_hub():
     return h
 
 
-class MainLogic:
-    def __init__(self):
-        self.download_photo_from_month()
-
+class ColorPalate:
     @property
-    def keywords(self):  # pragma: no cover
+    def __keywords__(self):  # pragma: no cover
         # No need to check for coverage
         match datetime.datetime.now().month:
             case 1:
@@ -56,10 +53,10 @@ class MainLogic:
             case 12:
                 return "christmas tree presents"
 
-    def download_photo_from_month(self):
+    def _download_photo_from_month_(self):
         output_path = pathlib.Path(__file__).parent.resolve()
         b = bing.Bing(
-            query=self.keywords,
+            query=self.__keywords__,
             limit=1,
             output_dir=output_path,
             adult="None",
@@ -74,11 +71,15 @@ class MainLogic:
         return image_path
 
     def get_colors(self):
-        # TODO Get colors from photo
-        pass
+        import extcolors
 
-    def change_light_color(self):
+        return extcolors.extract_from_path(self._download_photo_from_month_())
+
+
+class LightWorker:
+    @staticmethod
+    def change_light_color():
+        clr = ColorPalate()
+
         # TODO Set light to colors from photo ONLY if on
         # TODO At end of run, check if light is still on, If light is off, exit loop
-        # TODO
-        pass

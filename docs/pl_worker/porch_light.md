@@ -11,21 +11,18 @@ Functions
 Classes
 -------
 
-`MainLogic()`
+`ColorPalate()`
 :   
-
-    ### Instance variables
-
-    `keywords`
-    :
 
     ### Methods
 
-    `change_light_color(self)`
-    :
-
-    `download_photo_from_month(self)`
-    :
-
     `get_colors(self)`
+    :
+
+`LightWorker()`
+:   
+
+    ### Static methods
+
+    `change_light_color()`
     :

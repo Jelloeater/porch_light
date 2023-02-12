@@ -16,9 +16,12 @@ class TestPL:
         assert pl.check_hub().devices is not None
 
     def test_dl(self):
-        p = pl_worker.porch_light.MainLogic()
-        f = p.download_photo_from_month()
-        assert os.path.exists(f)
+        p = pl_worker.porch_light.ColorPalate()
+        path = p._download_photo_from_month_()
+        assert os.path.exists(path)
+
+    def test_change_color(self):
+        p = pl_worker.porch_light.LightWorker.change_light_color()
 
 
 class Test_API_full:
