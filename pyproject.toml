@@ -17,7 +17,7 @@ readme = "README.md"
 python = "^3.10"
 hubitatcontrol = {git = "https://github.com/Jelloeater/hubitatcontrol.git"}
 extcolors = "^1.0.0"
-google-images-search = "^1.4.6"
+bing-image-downloader = "*"
 fastapi ="*"
 uvicorn ={version="*", extras = ["standard"]}
 

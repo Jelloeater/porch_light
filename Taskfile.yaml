@@ -33,6 +33,7 @@ tasks:
             - poetry run xenon --max-absolute B --max-modules B --max-average B {{.BUILD_DIR}} # Check complexity
             - poetry run pytest --cov --cov-fail-under=75 # Run test
     commit:
+        aliases: [format]
         silent: true
         interactive: false
         cmds:

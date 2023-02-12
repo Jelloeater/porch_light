@@ -3,7 +3,6 @@ from time import sleep
 
 import requests
 from dotenv import load_dotenv
-from fastapi.testclient import TestClient
 
 import pl_worker.porch_light
 import pl_worker.porch_light as pl
@@ -13,7 +12,7 @@ load_dotenv()
 
 
 class TestPL:
-    def test_check_hub():
+    def test_check_hub(self):
         assert pl.check_hub().devices is not None
 
     def test_dl(self):

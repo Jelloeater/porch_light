@@ -26,9 +26,16 @@ class MainLogic:
         self.download_photo_from_month()
 
     def download_photo_from_month(self):
+        import pathlib
+
+        pwd = pathlib.Path(__file__).parent.resolve()
         now = datetime.datetime.now()
-        m = now.strftime("%B")
-        pass
+        month = now.strftime("%B")
+        query = month + " holiday" + " valentines"
+        from bing_image_downloader import bing
+
+        bing = bing.Bing(query=query, limit=1, output_dir=pwd, adult="", timeout=5, filter="photo", verbose=False)
+        bing.run()
 
 
 # TODO Get Photo from month name
