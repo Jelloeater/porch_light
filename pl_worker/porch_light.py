@@ -25,20 +25,48 @@ class MainLogic:
     def __init__(self):
         self.download_photo_from_month()
 
+    @property
+    def keywords(self):
+        match datetime.datetime.now().month:
+            case 1:
+                return "snow winter cold"
+            case 2:
+                return "valentine heart love"
+            case 3:
+                return "st patricks irish lucky"
+            case 4:
+                return "easter bunny spring"
+            case 5:
+                return "Cinco de mayo"
+            case 6:
+                return "summer beach fun water"
+            case 7:
+                return "Independence USA flag"
+            case 8:
+                return "summer sky"
+            case 9:
+                return "labor day"
+            case 10:
+                return "halloween spooky"
+            case 11:
+                return "thanksgiving fall family"
+            case 12:
+                return "christmas tree presents"
+
     def download_photo_from_month(self):
         import pathlib
 
         pwd = pathlib.Path(__file__).parent.resolve()
-        now = datetime.datetime.now()
-        month = now.strftime("%B")
-        query = month + " holiday" + " valentines"
+
         from bing_image_downloader import bing
 
-        bing = bing.Bing(query=query, limit=1, output_dir=pwd, adult="", timeout=5, filter="photo", verbose=False)
+        x = self.keywords
+        bing = bing.Bing(
+            query=self.keywords, limit=1, output_dir=pwd, adult="None", timeout=5, filter="clip", verbose=True
+        )
         bing.run()
 
 
-# TODO Get Photo from month name
 # TODO Get colors from photo
 # TODO Set light to colors from photo ONLY if on
 # TODO Listen for hook indicating time to change color
