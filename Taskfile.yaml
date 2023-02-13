@@ -30,10 +30,12 @@ tasks:
         dotenv: [prod.env]
         cmds:
             - poetry run whispers {{.BUILD_DIR}} # Check for security issues
-            - poetry run bandit --silent -r {{.BUILD_DIR}} # Check for security issues
-            - poetry run vulture --min-confidence 100 {{.BUILD_DIR}} # Look for dead code
-            - poetry run xenon --max-absolute B --max-modules B --max-average B {{.BUILD_DIR}} # Check complexity
-            - poetry run pytest --cov --cov-fail-under=75 # Run test
+            - poetry run bandit --silent -r {{.BUILD_DIR}}
+            - poetry run vulture --min-confidence 100 {{.BUILD_DIR}}
+            - poetry run xenon --max-absolute B --max-modules B --max-average B {{.BUILD_DIR}}
+#            - poetry run mypy --install-types --non-interactive
+#            - poetry run mypy {{.BUILD_DIR}} # Little too aggressive
+            - poetry run pytest --cov --cov-fail-under=75 #--typeguard-packages={{.BUILD_DIR}} # Leave typeguard off for now
     commit:
         aliases: [format]
         silent: true

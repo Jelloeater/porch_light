@@ -22,8 +22,6 @@ fastapi ="*"
 uvicorn ={version="*", extras = ["standard"]}
 
 
-
-
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = "test/"
@@ -42,12 +40,14 @@ force_grid_wrap = 0
 use_parentheses = "True"
 line_length = 120
 
+[tool.poetry.group.test.dependencies]
+httpx = "*"
+setuptools = "*"
+pytest = "*"
+pytest-cov = "*"
+python-dotenv = "*"
 
 [tool.poetry.group.dev.dependencies]
-# Proj specific
-python-dotenv = "*"
-httpx = "*"
-# General Tools
 setuptools = "*"
 pytest = "*"
 pytest-cov = "*"
@@ -65,6 +65,7 @@ pdoc3 = "*"
 pylint = "*"
 bandit = "*"
 whispers = "*"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
