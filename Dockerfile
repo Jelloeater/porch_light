@@ -34,4 +34,4 @@ RUN poetry install --no-interaction --no-root --without dev
 RUN useradd --create-home appuser
 USER appuser
 # Run the executable
-CMD [ "python3", "pl_worker/webserver.py" ]
+CMD [ "python3", "pl_worker/__init__.py" ]
