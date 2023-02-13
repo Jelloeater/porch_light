@@ -68,6 +68,7 @@ class ColorPalate:
             verbose=False,
         )
         b.run()
+        # FIXME Need to search for image or take output from above, not always .jpg
         image_path = os.path.join(output_path, "Image_1.jpg")
         if not os.path.exists(image_path):
             raise ValueError("File not downloaded")

@@ -23,6 +23,7 @@ uvicorn ={version="*", extras = ["standard"]}
 
 
 
+
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = "test/"
@@ -50,19 +51,20 @@ httpx = "*"
 setuptools = "*"
 pytest = "*"
 pytest-cov = "*"
-pre-commit = "*"
 pytest-pycharm = "*"
-vulture = "*"
-isort = "*"
-pdoc3 = "*"
-radon = "*"
-xenon = "*"
-bandit = "*"
-black = "*"
-typing_extensions ="*"
-#typeguard ="*"
-#mypy = "*"
+pre-commit = "*" # Commit hooks
+vulture = "*" # Dead Code Search
+isort = "*" # Import Cleanup
+radon = "*" # Code Complexity
+xenon = "*" # Code Complexity
+bandit = "*" # Security
+black = "*" # Formating
+typing_extensions ="*" # Typing
+#typeguard ="*" # Typing
+#mypy = "*" # Typing
+pdoc3 = "*"# Doc Gen
 pylint = "*" # Needed for diag gen
+whispers = "*" # Security cred search
 
 [build-system]
 requires = ["poetry-core"]

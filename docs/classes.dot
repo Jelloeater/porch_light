@@ -1,7 +1,7 @@
 digraph "classes" {
 rankdir=BT
 charset="utf-8"
-"pl_worker.porch_light.ColorPalate" [color="black", fontcolor="black", label=<{ColorPalate|<br ALIGN="LEFT"/>|get_colors()<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"pl_worker.porch_light.ColorPalate" [color="black", fontcolor="black", label=<{ColorPalate|<br ALIGN="LEFT"/>|get_colors(tolerance: int, number_of_colors: int)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
 "pl_worker.porch_light.LightWorker" [color="black", fontcolor="black", label=<{LightWorker|<br ALIGN="LEFT"/>|change_light_color()<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
 "pl_worker.webserver.Server" [color="black", fontcolor="black", label=<{Server|port : int<br ALIGN="LEFT"/>|local_nic()<br ALIGN="LEFT"/>start_server()<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
 "pl_worker.webserver.web_app" [color="black", fontcolor="black", label=<{web_app|app : FastAPI<br ALIGN="LEFT"/>|}>, shape="record", style="solid"];

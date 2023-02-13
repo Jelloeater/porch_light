@@ -20,7 +20,7 @@ Classes
 
     ### Methods
 
-    `get_colors(self)`
+    `get_colors(self, tolerance: int, number_of_colors: int)`
     :
 
 `LightWorker()`

@@ -27,7 +27,9 @@ tasks:
     test:
         silent: true
         interactive: false
+        dotenv: [prod.env]
         cmds:
+            - poetry run whispers {{.BUILD_DIR}} # Check for security issues
             - poetry run bandit --silent -r {{.BUILD_DIR}} # Check for security issues
             - poetry run vulture --min-confidence 100 {{.BUILD_DIR}} # Look for dead code
             - poetry run xenon --max-absolute B --max-modules B --max-average B {{.BUILD_DIR}} # Check complexity

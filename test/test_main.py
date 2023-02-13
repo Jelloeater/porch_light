@@ -12,7 +12,8 @@ import pl_worker.webserver as web
 load_dotenv("../prod.env")
 
 
-@pytest.mark.skip(reason="no way of currently testing this")
+# FIXME no way of currently testing this
+@pytest.mark.skip
 def test_start_test_server():
     from dotenv import load_dotenv
 
