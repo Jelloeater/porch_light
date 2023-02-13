@@ -101,7 +101,7 @@ celerybeat-schedule
 *.sage.py
 
 # Environments
-.env
+prod.env
 .venv
 env/
 venv/
@@ -131,3 +131,5 @@ dmypy.json
 .idea/*
 .gitsecret/keys/random_seed
 !*.secret
+dev.env
+.env

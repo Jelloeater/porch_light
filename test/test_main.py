@@ -8,7 +8,7 @@ import pl_worker.porch_light
 import pl_worker.porch_light as pl
 import pl_worker.webserver as web
 
-load_dotenv()
+load_dotenv("../prod.env")
 
 
 class TestPL:
