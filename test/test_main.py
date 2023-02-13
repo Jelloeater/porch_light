@@ -1,6 +1,7 @@
 import os
 from time import sleep
 
+import pytest
 import requests
 from dotenv import load_dotenv
 
@@ -9,6 +10,14 @@ import pl_worker.porch_light as pl
 import pl_worker.webserver as web
 
 load_dotenv("../prod.env")
+
+
+@pytest.mark.skip(reason="no way of currently testing this")
+def test_start_test_server():
+    from dotenv import load_dotenv
+
+    load_dotenv("../prod.env")
+    web.Server.start_server()
 
 
 class TestPL:
@@ -20,6 +29,8 @@ class TestPL:
         path = p._download_photo_from_month_()
         assert os.path.exists(path)
 
+    # FIXME Need to figure out how to run this in a subprocess
+    @pytest.mark.skip
     def test_change_color(self):
         p = pl_worker.porch_light.LightWorker.change_light_color()
 

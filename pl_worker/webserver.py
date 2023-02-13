@@ -13,15 +13,17 @@ class web_app:
             return {self.app.docs_url}
 
         @self.app.get("/check-hub")
-        async def root():
+        async def check_hub():
             h = porch_light.check_hub()
             return {h}
 
         @self.app.get("/start")
-        async def root():
-            porch_light.LightWorker.change_light_color()
-            # FIXME This needs to run in separate process / thread
-            return {""}
+        async def start():
+            from multiprocessing import Process
+
+            background_server = Process(target=porch_light.LightWorker.change_light_color, daemon=True)
+            background_server.start()
+            return {background_server.pid}
 
 
 class Server:
