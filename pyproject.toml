@@ -57,15 +57,15 @@ vulture = "*" # Dead Code Search
 isort = "*" # Import Cleanup
 radon = "*" # Code Complexity
 xenon = "*" # Code Complexity
-bandit = "*" # Security
 black = "*" # Formating
 typing_extensions ="*" # Typing
 #typeguard ="*" # Typing
 #mypy = "*" # Typing
 pdoc3 = "*"# Doc Gen
 pylint = "*" # Needed for diag gen
+bandit = "*" # Security
 whispers = "*" # Security cred search
-
+gittyleaks ="*" # Security cred search
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

@@ -29,11 +29,17 @@ tasks:
         interactive: false
         dotenv: [prod.env]
         cmds:
-            - poetry run whispers {{.BUILD_DIR}} # Check for security issues
-            - poetry run bandit --silent -r {{.BUILD_DIR}} # Check for security issues
+            - task: security
             - poetry run vulture --min-confidence 100 {{.BUILD_DIR}} # Look for dead code
             - poetry run xenon --max-absolute B --max-modules B --max-average B {{.BUILD_DIR}} # Check complexity
             - poetry run pytest --cov --cov-fail-under=75 # Run test
+    security:
+        silent: true
+        interactive: false
+        cmds:
+            - poetry run whispers {{.BUILD_DIR}} # Check for security issues
+            - poetry run bandit --silent -r {{.BUILD_DIR}} # Check for security issues
+            #- poetry run gittyleaks --no-banner # Full project audit, not really needed
     commit:
         aliases: [format]
         silent: true
