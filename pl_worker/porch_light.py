@@ -6,7 +6,6 @@ import pathlib
 import extcolors
 import hubitatcontrol
 from bing_image_downloader import bing
-from hubitatcontrol import Hub
 
 console_handler = logging.StreamHandler()
 console_handler.setFormatter(
@@ -86,6 +85,7 @@ class LightWorker:
         clr = ColorPalate().get_colors()
 
         porch = hubitatcontrol.lookup_device(hub_in=get_hub(), device_lookup="Porch")
+
         pass
 
         # TODO Set light to colors from photo ONLY if on
