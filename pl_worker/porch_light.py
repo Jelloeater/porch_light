@@ -85,8 +85,8 @@ class LightWorker:
         clr = ColorPalate().get_colors()
 
         porch = hubitatcontrol.lookup_device(hub_in=get_hub(), device_lookup="Porch")
-
-        pass
+        if porch.switch == "on":
+            pass
 
         # TODO Set light to colors from photo ONLY if on
         # TODO At end of run, check if light is still on, If light is off, exit loop
