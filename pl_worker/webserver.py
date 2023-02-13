@@ -19,8 +19,9 @@ class web_app:
 
         @self.app.get("/start")
         async def root():
-            h = porch_light.ColorPalate()
-            return {h}
+            porch_light.LightWorker.change_light_color()
+            # FIXME This needs to run in separate process / thread
+            return {""}
 
 
 class Server:

@@ -1,17 +1,15 @@
+import colorsys
 import datetime
 import logging.handlers
 import os
 import pathlib
+import time
 
 import extcolors
 import hubitatcontrol
 from bing_image_downloader import bing
 
-console_handler = logging.StreamHandler()
-console_handler.setFormatter(
-    logging.Formatter("[%(asctime)s] [%(levelname)8s] --- %(message)s (%(filename)s:%(funcName)s():%(lineno)s)")
-)
-logging.basicConfig(level=logging.DEBUG, handlers=[console_handler])
+logging.basicConfig(level=logging.WARNING)
 
 
 def get_hub():
@@ -64,10 +62,10 @@ class ColorPalate:
             query=self.__keywords__,
             limit=1,
             output_dir=output_path,
-            adult="None",
+            adult="",
             timeout=5,
-            filter="photo",
-            verbose=True,
+            filter="clipart",
+            verbose=False,
         )
         b.run()
         image_path = os.path.join(output_path, "Image_1.jpg")
@@ -75,18 +73,33 @@ class ColorPalate:
             raise ValueError("File not downloaded")
         return image_path
 
-    def get_colors(self):
-        return extcolors.extract_from_path(self._download_photo_from_month_())
+    def get_colors(self, tolerance: int, number_of_colors: int):
+        return extcolors.extract_from_path(
+            path=self._download_photo_from_month_(), tolerance=tolerance, limit=number_of_colors
+        )
 
 
 class LightWorker:
     @staticmethod
     def change_light_color():
-        clr = ColorPalate().get_colors()
+        clr = ColorPalate().get_colors(
+            tolerance=int(os.getenv("COLOR_TOLERANCE")), number_of_colors=int(os.getenv("NUMBER_OF_COLORS"))
+        )
 
-        porch = hubitatcontrol.lookup_device(hub_in=get_hub(), device_lookup="Porch")
-        if porch.switch == "on":
-            pass
+        porch = hubitatcontrol.lookup_device(hub_in=get_hub(), device_lookup=os.getenv("HUBITAT_DEVICE_TO_CYCLE"))
+        while porch.switch == "on":
+            for i in clr[0]:
+                r = i[0][0]
+                g = i[0][1]
+                b = i[0][2]
+                hsv = colorsys.rgb_to_hsv(r, g, b)
+                logging.debug(hsv)
+                # TODO Convert to HSL
+                pass
+                time.sleep(int(os.getenv("CYCLE_TIME")))
+                # porch.set_hue()
+                # porch.set_saturation()
+                # porch.set_level()
 
         # TODO Set light to colors from photo ONLY if on
         # TODO At end of run, check if light is still on, If light is off, exit loop
