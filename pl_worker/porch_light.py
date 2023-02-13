@@ -3,6 +3,8 @@ import logging.handlers
 import os
 import pathlib
 
+import extcolors
+import hubitatcontrol
 from bing_image_downloader import bing
 from hubitatcontrol import Hub
 
@@ -13,11 +15,15 @@ console_handler.setFormatter(
 logging.basicConfig(level=logging.DEBUG, handlers=[console_handler])
 
 
-def check_hub():
+def get_hub():
     host_env = os.getenv("HUBITAT_HOST")
     token_env = os.getenv("HUBITAT_API_TOKEN")
     app_id_env = os.getenv("HUBITAT_API_APP_ID")
-    h = Hub(host=host_env, token=token_env, app_id=app_id_env)
+    return hubitatcontrol.get_hub(host=host_env, token=token_env, app_id=app_id_env)
+
+
+def check_hub():
+    h = get_hub()
     if h.devices is None:
         raise Exception("Cannot access Hubitat")
     return h
@@ -71,15 +77,16 @@ class ColorPalate:
         return image_path
 
     def get_colors(self):
-        import extcolors
-
         return extcolors.extract_from_path(self._download_photo_from_month_())
 
 
 class LightWorker:
     @staticmethod
     def change_light_color():
-        clr = ColorPalate()
+        clr = ColorPalate().get_colors()
+
+        porch = hubitatcontrol.lookup_device(hub_in=get_hub(), device_lookup="Porch")
+        pass
 
         # TODO Set light to colors from photo ONLY if on
         # TODO At end of run, check if light is still on, If light is off, exit loop

@@ -8,6 +8,10 @@ Functions
 `check_hub()`
 :   
 
+    
+`get_hub()`
+:   
+
 Classes
 -------
 
