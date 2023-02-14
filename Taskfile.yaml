@@ -6,7 +6,7 @@ vars:
 tasks:
 # Local Dev
     default:
-        silent: true
+        silent: false
         interactive: false
         cmds:
             - poetry install
@@ -25,7 +25,7 @@ tasks:
         - poetry check
         - py3clean .
     test:
-        silent: true
+        silent: false
         interactive: false
         dotenv: [prod.env]
         cmds:
@@ -38,13 +38,14 @@ tasks:
             - poetry run pytest --cov --cov-fail-under=75 #--typeguard-packages={{.BUILD_DIR}} # Leave typeguard off for now
     commit:
         aliases: [format]
-        silent: true
+        silent: false
         interactive: false
         cmds:
             - poetry run isort --atomic . # Sort imports
             - poetry run black . # Format code
+            - poetry run flake8
     docs:
-        silent: true
+        silent: false
         interactive: false
         cmds:
             - rm -rf docs
