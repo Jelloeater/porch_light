@@ -1,5 +1,5 @@
-Namespace pl_worker
-===================
+Module pl_worker
+================
 
 Sub-modules
 -----------

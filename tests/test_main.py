@@ -5,7 +5,6 @@ import pytest
 import requests
 from dotenv import load_dotenv
 
-import pl_worker.porch_light
 import pl_worker.porch_light as pl
 import pl_worker.webserver as web
 
@@ -26,14 +25,14 @@ class TestPL:
         assert pl.check_hub().devices is not None
 
     def test_dl(self):
-        p = pl_worker.porch_light.ColorPalate()
+        p = pl.ColorPalate()
         path = p._download_photo_from_month_()
         assert os.path.exists(path)
 
     # FIXME Need to figure out how to run this in a subprocess
     @pytest.mark.skip
     def test_change_color(self):
-        p = pl_worker.porch_light.LightWorker.change_light_color()
+        p = pl.LightWorker.change_light_color()
 
 
 class Test_API_full:
