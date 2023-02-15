@@ -1,7 +1,2 @@
-# Ignore everything
-**
-
-# ... except for dependencies and source
-!pyproject.toml
-!poetry.lock
-!pl_worker/*
+*.pyc
+*__pycache__*

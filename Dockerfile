@@ -29,7 +29,7 @@ COPY pyproject.toml .
 COPY poetry.lock .
 # Install ALL packages
 RUN poetry install --no-interaction --no-root --without dev,test
-COPY . .
+COPY /src .
 RUN tree /app
 # Create and switch to a new user
 RUN useradd --create-home appuser

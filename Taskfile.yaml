@@ -1,6 +1,6 @@
 version: '3'
 vars:
-    BUILD_DIR: pl_worker
+    BUILD_DIR: src/pl_worker
     IMAGE_NAME: pl_worker
     DOCKER_FILE: Dockerfile
 tasks:
