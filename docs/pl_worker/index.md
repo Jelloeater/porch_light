@@ -1,7 +1,6 @@
-Module pl_worker
-================
+# Module pl_worker
 
-Sub-modules
------------
-* pl_worker.porch_light
-* pl_worker.webserver
+## Sub-modules
+
+- pl_worker.porch_light
+- pl_worker.webserver

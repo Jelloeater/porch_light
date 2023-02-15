@@ -1,24 +1,24 @@
-Module pl_worker.webserver
-==========================
+# Module pl_worker.webserver
 
-Classes
--------
+## Classes
 
 `Server()`
-:   
+:
 
-    ### Class variables
+```
+### Class variables
 
-    `port`
-    :
+`port`
+:
 
-    ### Static methods
+### Static methods
 
-    `local_nic()`
-    :
+`local_nic()`
+:
 
-    `start_server()`
-    :
+`start_server()`
+:
+```
 
 `web_app()`
 :

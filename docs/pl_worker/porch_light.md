@@ -1,32 +1,31 @@
-Module pl_worker.porch_light
-============================
+# Module pl_worker.porch_light
 
-Functions
----------
+## Functions
 
-    
 `check_hub()`
-:   
+:
 
-    
 `get_hub()`
-:   
+:
 
-Classes
--------
+## Classes
 
 `ColorPalate()`
-:   
+:
 
-    ### Methods
+```
+### Methods
 
-    `get_colors(self, tolerance: int, number_of_colors: int)`
-    :
+`get_colors(self, tolerance: int, number_of_colors: int)`
+:
+```
 
 `LightWorker()`
-:   
+:
 
-    ### Static methods
+```
+### Static methods
 
-    `change_light_color()`
-    :
+`change_light_color()`
+:
+```

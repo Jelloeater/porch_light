@@ -13,6 +13,9 @@ tasks:
             - task: commit
             - task: docs
             - task: test
+    commit:
+        - task: format
+        - task: docs
     setup:
         - python3 -m pip install pipx
         - python3 -m pipx ensurepath
@@ -36,8 +39,7 @@ tasks:
 #            - poetry run mypy --install-types --non-interactive
 #            - poetry run mypy {{.BUILD_DIR}} # Little too aggressive
             - poetry run pytest --cov --cov-fail-under=75 #--typeguard-packages={{.BUILD_DIR}} # Leave typeguard off for now
-    commit:
-        aliases: [format]
+    format:
         silent: false
         interactive: false
         cmds:
@@ -49,8 +51,9 @@ tasks:
         interactive: false
         cmds:
             - rm -rf docs
-            - poetry run pdoc3 {{.BUILD_DIR}} -o docs -f # Doc gen
-            - poetry run pyreverse {{.BUILD_DIR}} -d docs # Diagram gen
+            - poetry run pdoc3 {{.BUILD_DIR}} -o docs -f
+            - poetry run pyreverse {{.BUILD_DIR}} -d docs
+            - poetry run mdformat docs
             - git add docs
     docker-purge: docker system prune -a -f --volumes
     show_secrets:
