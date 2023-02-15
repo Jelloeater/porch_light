@@ -35,4 +35,5 @@ RUN tree /app
 RUN useradd --create-home appuser
 USER appuser
 # Run the executable
+ENV PYTHONPATH "${PYTHONPATH}:/pl_worker"
 CMD [ "python3", "pl_worker/webserver.py" ]
