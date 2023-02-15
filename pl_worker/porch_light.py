@@ -58,6 +58,11 @@ class ColorPalate:
 
     def _download_photo_from_month_(self):
         output_path = pathlib.Path(__file__).parent.resolve()
+
+        for i in os.listdir(output_path):
+            if "Image_1" in i:
+                os.remove(os.path.join(output_path, i))
+
         b = bing.Bing(
             query=self.__keywords__,
             limit=1,
@@ -68,8 +73,11 @@ class ColorPalate:
             verbose=False,
         )
         b.run()
-        # FIXME Need to search for image or take output from above, not always .jpg
-        image_path = os.path.join(output_path, "Image_1.jpg")
+        dl_photo = None
+        for i in os.listdir(output_path):
+            if "Image_1" in i:
+                dl_photo = i
+        image_path = os.path.join(output_path, dl_photo)
         if not os.path.exists(image_path):
             raise ValueError("File not downloaded")
         return image_path
