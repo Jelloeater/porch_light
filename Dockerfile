@@ -28,10 +28,11 @@ RUN poetry config virtualenvs.create false
 COPY . .
 RUN tree /app
 # Install ALL packages
-RUN poetry install --no-interaction --no-root --without dev
+RUN poetry install --no-interaction --no-root --without dev,test
 
 # Create and switch to a new user
 RUN useradd --create-home appuser
 USER appuser
 # Run the executable
-CMD [ "python3", "pl_worker/__init__.py" ]
+
+CMD [ "python3", "pl_worker/webserver.py" ]

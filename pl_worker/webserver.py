@@ -1,5 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
+from starlette.responses import RedirectResponse
 
 import pl_worker.porch_light as porch_light
 
@@ -8,9 +9,9 @@ class web_app:
     def __init__(self):
         self.app = FastAPI()
 
-        @self.app.get("/")
+        @self.app.get("/", include_in_schema=False)
         async def root():
-            return {self.app.docs_url}
+            return RedirectResponse(self.app.docs_url)
 
         @self.app.get("/check-hub")
         async def check_hub():
@@ -45,3 +46,7 @@ class Server:
         c = u.config.Config(app=web_app().app, host=cls.local_nic(), port=cls.port)
         w = u.Server(c)
         w.run()
+
+
+if __name__ == "__main__":
+    Server().start_server()

@@ -63,8 +63,9 @@ tasks:
             DOCKER_HOST: unix:///run/user/1000/docker.sock
         cmds:
             - docker-compose up
-    start_docker:
+    docker_build:
         cmds:
+            - docker-compose build
             - docker-compose up # HTTP bind to 80
 # Docker
     docker_deploy:
