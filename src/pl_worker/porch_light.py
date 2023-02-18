@@ -83,9 +83,14 @@ class ColorPalate:
         return image_path
 
     def get_colors(self, tolerance: int, number_of_colors: int):
-        return extcolors.extract_from_path(
+        import timeit
+
+        start = timeit.default_timer()
+        color = extcolors.extract_from_path(
             path=self._download_photo_from_month_(), tolerance=tolerance, limit=number_of_colors
         )
+        logging.debug(f"Photo Compute time = {timeit.default_timer() - start}")
+        return color
 
 
 class LightWorker:
@@ -102,7 +107,16 @@ class LightWorker:
                 g = i[0][1]
                 b = i[0][2]
                 hsv = colorsys.rgb_to_hsv(r, g, b)
+
+                hue = hsv[0] / 100 * 255
+                sat = hsv[1] / 255 * 100
+                level = hsv[2] / 255 * 100
                 logging.debug(hsv)
+                porch.set_hue(hue)
+                porch.set_saturation(sat)
+                porch.set_level(level)
+                # TODO Fix math
+
                 # TODO Convert to HSL
                 pass
                 time.sleep(int(os.getenv("CYCLE_TIME")))

@@ -30,7 +30,7 @@ class TestPL:
         assert os.path.exists(path)
 
     # FIXME Need to figure out how to run this in a subprocess
-    @pytest.mark.skip
+    # @pytest.mark.skip
     def test_change_color(self):
         p = pl.LightWorker.change_light_color()
 
