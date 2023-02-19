@@ -1,12 +1,11 @@
 import os
 from time import sleep
 
+import pl_worker.porch_light as pl
+import pl_worker.webserver as web
 import pytest
 import requests
 from dotenv import load_dotenv
-
-import pl_worker.porch_light as pl
-import pl_worker.webserver as web
 
 load_dotenv("../prod.env")
 

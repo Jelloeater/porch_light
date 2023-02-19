@@ -1,8 +1,7 @@
+import pl_worker.porch_light as porch_light
 import uvicorn
 from fastapi import FastAPI
 from starlette.responses import RedirectResponse
-
-import pl_worker.porch_light as porch_light
 
 
 class web_app:
