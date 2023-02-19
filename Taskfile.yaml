@@ -16,6 +16,7 @@ tasks:
     commit:
         - task: format
         - task: docs
+        - poetry run tartufo scan-local-repo .
     setup:
         - python3 -m pip install pipx
         - python3 -m pipx ensurepath
