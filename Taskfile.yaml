@@ -1,6 +1,6 @@
 version: '3'
 vars:
-    BUILD_DIR: src/pl_worker
+    BUILD_DIR: pl_worker
     IMAGE_NAME: pl_worker
     DOCKER_FILE: Dockerfile
 tasks:
@@ -11,12 +11,12 @@ tasks:
         cmds:
             - poetry install
             - task: commit
-            - task: docs
             - task: test
     commit:
         - task: format
+        - task: security
         - task: docs
-        - poetry run tartufo scan-local-repo .
+
     setup:
         - python3 -m pip install pipx
         - python3 -m pipx ensurepath
@@ -28,13 +28,15 @@ tasks:
         - poetry cache clear PyPI --all  --no-interaction
         - poetry check
         - py3clean .
+    security:
+        - poetry run whispers {{.BUILD_DIR}} # Check for security issues
+        - poetry run bandit --silent -r {{.BUILD_DIR}}
+        - poetry run tartufo scan-local-repo .
     test:
         silent: false
         interactive: false
         dotenv: [prod.env]
         cmds:
-            - poetry run whispers {{.BUILD_DIR}} # Check for security issues
-            - poetry run bandit --silent -r {{.BUILD_DIR}}
             - poetry run vulture --min-confidence 100 {{.BUILD_DIR}}
             - poetry run xenon --max-absolute B --max-modules B --max-average B {{.BUILD_DIR}}
 #            - poetry run mypy --install-types --non-interactive
