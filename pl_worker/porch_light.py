@@ -112,9 +112,8 @@ class LightWorker:
                 sat = hsv[1] / 255 * 100
                 level = hsv[2] / 255 * 100
                 logging.debug(hsv)
-                porch.set_hue(hue)
-                porch.set_saturation(sat)
-                porch.set_level(level)
+                porch.set_color(hue=hue,saturation=sat,level=level)
+
                 # TODO Fix math
 
                 # TODO Convert to HSL
