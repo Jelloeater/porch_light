@@ -1,4 +1,5 @@
 import os
+from multiprocessing import Process
 from time import sleep
 
 import requests
@@ -6,7 +7,6 @@ from dotenv import load_dotenv
 
 import pl_worker.porch_light as pl
 import pl_worker.webserver as web
-from multiprocessing import Process
 
 load_dotenv("../prod.env")
 os.environ.setdefault("PL_TEST_MODE", str(True))  # To break out of color cycle loop
@@ -22,13 +22,15 @@ class TestPL:
         assert os.path.exists(path)
 
     def test_change_color(self):
-        # Basic smoke test
         import hubitatcontrol
 
         light = hubitatcontrol.lookup_device(hub_in=pl.get_hub(), device_lookup=os.getenv("HUBITAT_DEVICE_TO_CYCLE"))
         light.turn_on()
         p = pl.LightWorker.change_light_color()
 
+        # TODO Test: take into account 100% brightness level in test
+        # Easiest thing to do is physically check that the light is changing to colors similar to the photo downloaded
+        # Due to shifting the brightness up to 100% the current values won't match the generated ones
 
 
 class Test_API_full:

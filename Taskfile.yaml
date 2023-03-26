@@ -77,7 +77,7 @@ tasks:
     docker_deploy:
         desc: Deploy to remote docker host
         cmds:
-            - rsync -av --delete --filter=':- .gitignore' . root@docker:/{{.FOLDER}}/
+            - rsync -av --filter=':- .gitignore' . root@docker:/{{.FOLDER}}/
             - git secret reveal -f
             - rsync prod.env root@docker:/{{.FOLDER}}/prod.env
             - ssh root@docker 'cd /{{.FOLDER}}/; task setup; task docker;' # Setup Env on remote box

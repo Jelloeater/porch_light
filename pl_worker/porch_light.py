@@ -96,6 +96,7 @@ class ColorPalate:
 class LightWorker:
     @staticmethod
     def change_light_color():
+        """Returns list of colors to cycle, and light device object"""
         colors_to_cycle = ColorPalate().get_colors(
             tolerance=int(os.getenv("COLOR_TOLERANCE")), number_of_colors=int(os.getenv("NUMBER_OF_COLORS"))
         )
@@ -119,4 +120,4 @@ class LightWorker:
                 time.sleep(int(os.getenv("CYCLE_TIME")))
             if os.getenv("PL_TEST_MODE") == str(True):
                 break
-        return [colors_to_cycle, light]
+        return {"colors_to_cycle": colors_to_cycle, "light": light}
