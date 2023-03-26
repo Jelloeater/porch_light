@@ -1,23 +1,15 @@
 import os
 from time import sleep
 
-import pytest
 import requests
 from dotenv import load_dotenv
 
 import pl_worker.porch_light as pl
 import pl_worker.webserver as web
+from multiprocessing import Process
 
 load_dotenv("../prod.env")
-
-
-# FIXME no way of currently testing this
-@pytest.mark.skip
-def test_start_test_server():
-    from dotenv import load_dotenv
-
-    load_dotenv("../prod.env")
-    web.Server.start_server()
+os.environ.setdefault("PL_TEST_MODE", str(True))  # To break out of color cycle loop
 
 
 class TestPL:
@@ -29,8 +21,6 @@ class TestPL:
         path = p._download_photo_from_month_()
         assert os.path.exists(path)
 
-    # FIXME Need to figure out how to run this in a subprocess
-    # @pytest.mark.skip
     def test_change_color(self):
         import hubitatcontrol
 
@@ -40,8 +30,6 @@ class TestPL:
 
 
 class Test_API_full:
-    from multiprocessing import Process
-
     background_server = Process(target=web.Server.start_server, daemon=True)
 
     @classmethod

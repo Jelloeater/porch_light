@@ -112,8 +112,10 @@ class LightWorker:
 
                 # Scale values up to 0-100 for Hubitat
                 hue = hsl[0] * 100
-                level = 100 # Always full brightness
+                level = 100  # Always full brightness
                 sat = hsl[2] * 100
                 logging.debug(f"HUE={hue}  SAT={sat}")
                 porch.set_color(hue=hue, saturation=sat, level=level)
                 time.sleep(int(os.getenv("CYCLE_TIME")))
+            if os.getenv("PL_TEST_MODE") == str(True):
+                break
