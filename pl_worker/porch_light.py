@@ -96,13 +96,13 @@ class ColorPalate:
 class LightWorker:
     @staticmethod
     def change_light_color():
-        clr = ColorPalate().get_colors(
+        colors_to_cycle = ColorPalate().get_colors(
             tolerance=int(os.getenv("COLOR_TOLERANCE")), number_of_colors=int(os.getenv("NUMBER_OF_COLORS"))
         )
 
-        porch = hubitatcontrol.lookup_device(hub_in=get_hub(), device_lookup=os.getenv("HUBITAT_DEVICE_TO_CYCLE"))
-        while porch.switch == "on":
-            for i in clr[0]:
+        light = hubitatcontrol.lookup_device(hub_in=get_hub(), device_lookup=os.getenv("HUBITAT_DEVICE_TO_CYCLE"))
+        while light.switch == "on":
+            for i in colors_to_cycle[0]:
                 r = i[0][0]
                 g = i[0][1]
                 b = i[0][2]
@@ -115,7 +115,8 @@ class LightWorker:
                 level = 100  # Always full brightness
                 sat = hsl[2] * 100
                 logging.debug(f"HUE={hue}  SAT={sat}")
-                porch.set_color(hue=hue, saturation=sat, level=level)
+                light.set_color(hue=hue, saturation=sat, level=level)
                 time.sleep(int(os.getenv("CYCLE_TIME")))
             if os.getenv("PL_TEST_MODE") == str(True):
                 break
+        return [colors_to_cycle, light]

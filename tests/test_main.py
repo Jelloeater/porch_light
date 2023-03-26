@@ -22,11 +22,13 @@ class TestPL:
         assert os.path.exists(path)
 
     def test_change_color(self):
+        # Basic smoke test
         import hubitatcontrol
 
         light = hubitatcontrol.lookup_device(hub_in=pl.get_hub(), device_lookup=os.getenv("HUBITAT_DEVICE_TO_CYCLE"))
         light.turn_on()
         p = pl.LightWorker.change_light_color()
+
 
 
 class Test_API_full:
