@@ -27,5 +27,5 @@
 ### Static methods
 
 `change_light_color()`
-:
+:   Returns list of colors to cycle, and light device object
 ```
