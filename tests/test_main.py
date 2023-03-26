@@ -33,6 +33,7 @@ class TestPL:
     # @pytest.mark.skip
     def test_change_color(self):
         import hubitatcontrol
+
         light = hubitatcontrol.lookup_device(hub_in=pl.get_hub(), device_lookup=os.getenv("HUBITAT_DEVICE_TO_CYCLE"))
         light.turn_on()
         p = pl.LightWorker.change_light_color()

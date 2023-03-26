@@ -106,22 +106,18 @@ class LightWorker:
                 r = i[0][0]
                 g = i[0][1]
                 b = i[0][2]
-                hsv = colorsys.rgb_to_hsv(r, g, b)
 
-                hue = hsv[0] / 100 * 255
-                sat = hsv[1] / 255 * 100
-                level = hsv[2] / 255 * 100
-                logging.debug(hsv)
-                porch.set_color(hue=hue,saturation=sat,level=level)
+                hsl = colorsys.rgb_to_hls(r=r / 255, g=g / 255, b=b / 255)
+                # Normalize RGB Values, as colorsys takes 0-1.0 for input
 
-                # TODO Fix math
-
-                # TODO Convert to HSL
-                pass
+                # Scale values up to 0-100 for Hubitat
+                hue = hsl[0] * 100
+                level = hsl[1] * 100
+                sat = hsl[2] * 100
+                logging.debug(hsl)
+                porch.set_color(hue=hue, saturation=sat, level=level)
                 time.sleep(int(os.getenv("CYCLE_TIME")))
-                # porch.set_hue()
-                # porch.set_saturation()
-                # porch.set_level()
+
 
         # TODO Set light to colors from photo ONLY if on
         # TODO At end of run, check if light is still on, If light is off, exit loop
