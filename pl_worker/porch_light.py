@@ -117,7 +117,3 @@ class LightWorker:
                 logging.debug(hsl)
                 porch.set_color(hue=hue, saturation=sat, level=level)
                 time.sleep(int(os.getenv("CYCLE_TIME")))
-
-
-        # TODO Set light to colors from photo ONLY if on
-        # TODO At end of run, check if light is still on, If light is off, exit loop
