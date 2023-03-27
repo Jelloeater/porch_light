@@ -3,6 +3,7 @@ vars:
     BUILD_DIR: pl_worker
     IMAGE_NAME: pl_worker
     DOCKER_FILE: Dockerfile
+    HOST: dev
 tasks:
 # Local Dev
     default:
@@ -77,10 +78,10 @@ tasks:
     docker_deploy:
         desc: Deploy to remote docker host
         cmds:
-            - rsync -av --filter=':- .gitignore' . root@docker:/{{.FOLDER}}/
+            - rsync -av --filter=':- .gitignore' . root@{{.HOST}}:/{{.FOLDER}}/
             - git secret reveal -f
-            - rsync prod.env root@docker:/{{.FOLDER}}/prod.env
-            - ssh root@docker 'cd /{{.FOLDER}}/; task setup; task docker;' # Setup Env on remote box
-            - rsync -av --delete --filter=':- .gitignore' . root@docker:/{{.FOLDER}}/
+            - rsync prod.env root@{{.HOST}}:/{{.FOLDER}}/prod.env
+            - ssh root@{{.HOST}} 'cd /{{.FOLDER}}/; task setup; task docker;' # Setup Env on remote box
+            - rsync -av --delete --filter=':- .gitignore' . root@{{.HOST}}:/{{.FOLDER}}/
     docker: # These are the commands that get run remotely from above
         - docker-compose up -d
