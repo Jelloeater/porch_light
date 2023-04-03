@@ -1,7 +1,7 @@
 version: '2'
 services:
   pl-worker-api:
-    env_file: prod.env
+    env_file: .env
     restart: on-failure
     image: pl-worker-api
     build:
