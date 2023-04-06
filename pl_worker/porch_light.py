@@ -57,6 +57,7 @@ class ColorPalate:
                 return "christmas tree presents"
 
     def _download_photo_from_month_(self):
+        # FIXME Need to move download path to RW docker volume
         output_path = pathlib.Path(__file__).parent.resolve()
 
         for i in os.listdir(output_path):

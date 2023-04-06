@@ -4,11 +4,13 @@ from time import sleep
 
 import requests
 from dotenv import load_dotenv
+from starlette.testclient import TestClient
 
 import pl_worker.porch_light as pl
 import pl_worker.webserver as web
+from pl_worker import webserver
 
-load_dotenv("../prod.env")
+load_dotenv()
 os.environ.setdefault("PL_TEST_MODE", str(True))  # To break out of color cycle loop
 
 
@@ -31,6 +33,9 @@ class TestPL:
         # TODO Test: take into account 100% brightness level in test
         # Easiest thing to do is physically check that the light is changing to colors similar to the photo downloaded
         # Due to shifting the brightness up to 100% the current values won't match the generated ones
+
+
+client = TestClient(webserver.web_app().app)
 
 
 class Test_API_full:
