@@ -43,7 +43,7 @@ class Server:
     @classmethod
     def start_server(cls):  # pragma: no cover # TODO Remove when test fixed
         u = uvicorn
-        c = u.config.Config(app=web_app().app, host=cls.local_nic(), port=cls.port)
+        c = u.config.Config(app=web_app().app, host=cls.local_nic(), port=cls.port, proxy_headers=True)
         w = u.Server(c)
         w.run()
 
