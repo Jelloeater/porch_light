@@ -33,6 +33,7 @@ COPY . .
 RUN tree /app
 # Create and switch to a new user
 RUN useradd --create-home appuser
+RUN chown appuser:appuser -R /app/
 USER appuser
 # Run the executable
 ENV PYTHONPATH "${PYTHONPATH}:/pl_worker"

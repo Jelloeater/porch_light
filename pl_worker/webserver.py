@@ -1,8 +1,16 @@
+import logging
+import os
+
 import uvicorn
 from fastapi import FastAPI
 from starlette.responses import RedirectResponse
 
 import pl_worker.porch_light as porch_light
+
+if os.getenv("LOG_LEVEL") is None:
+    logging.basicConfig(level=logging.WARNING)
+else:
+    logging.basicConfig(level=int(os.getenv("LOG_LEVEL")))
 
 
 class web_app:

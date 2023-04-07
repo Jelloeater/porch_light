@@ -1,5 +1,6 @@
 import colorsys
 import datetime
+import json
 import logging.handlers
 import os
 import pathlib
@@ -8,8 +9,6 @@ import time
 import extcolors
 import hubitatcontrol
 from bing_image_downloader import bing
-
-logging.basicConfig(level=logging.WARNING)
 
 
 def get_hub():
@@ -103,6 +102,8 @@ class LightWorker:
         )
 
         light = hubitatcontrol.lookup_device(hub_in=get_hub(), device_lookup=os.getenv("HUBITAT_DEVICE_TO_CYCLE"))
+        logging.info("Starting color change")
+        logging.info(json.dumps(colors_to_cycle))
         while light.switch == "on":
             for i in colors_to_cycle[0]:
                 r = i[0][0]
