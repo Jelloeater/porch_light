@@ -133,3 +133,4 @@ dmypy.json
 !*.secret
 dev.env
 .env
+*.env
