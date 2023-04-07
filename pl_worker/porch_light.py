@@ -118,6 +118,11 @@ class LightWorker:
                 level = 100  # Always full brightness
                 sat = hsl[2] * 100
                 logging.debug(f"HUE={hue}  SAT={sat}")
+
+                if light.switch != "on":  # Exit function if light was turned off after start of run
+                    logging.info("Color Change Function DONE!")
+                    break
+
                 light.set_color(hue=hue, saturation=sat, level=level)
                 time.sleep(int(os.getenv("CYCLE_TIME")))
             if os.getenv("PL_TEST_MODE") == str(True):
