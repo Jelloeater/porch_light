@@ -24,8 +24,16 @@
 :
 
 ```
+### Class variables
+
+`color_state_file`
+:
+
 ### Static methods
 
 `change_light_color()`
 :   Returns list of colors to cycle, and light device object
+
+`pre_load_color()`
+:
 ```

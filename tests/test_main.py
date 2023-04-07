@@ -4,7 +4,7 @@ from time import sleep
 
 import requests
 from dotenv import load_dotenv
-from starlette.testclient import TestClient
+from fastapi.testclient import TestClient
 
 import pl_worker.porch_light as pl
 import pl_worker.webserver as web
@@ -28,7 +28,9 @@ class TestPL:
 
         light = hubitatcontrol.lookup_device(hub_in=pl.get_hub(), device_lookup=os.getenv("HUBITAT_DEVICE_TO_CYCLE"))
         light.turn_on()
-        p = pl.LightWorker.change_light_color()
+        p = pl.LightWorker()
+        p.pre_load_color()
+        p.change_light_color()
 
         # TODO Test: take into account 100% brightness level in test
         # Easiest thing to do is physically check that the light is changing to colors similar to the photo downloaded

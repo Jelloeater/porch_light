@@ -58,3 +58,4 @@ class Server:
 
 if __name__ == "__main__":
     Server().start_server()
+    # TODO Add pre-load for color cycle to cut down on cold start time

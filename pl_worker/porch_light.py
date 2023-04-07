@@ -94,13 +94,28 @@ class ColorPalate:
 
 
 class LightWorker:
+    color_state_file = "color_state.json"
+
     @staticmethod
-    def change_light_color():
-        """Returns list of colors to cycle, and light device object"""
+    def pre_load_color():
         colors_to_cycle = ColorPalate().get_colors(
             tolerance=int(os.getenv("COLOR_TOLERANCE")), number_of_colors=int(os.getenv("NUMBER_OF_COLORS"))
         )
+        color_state = json.dumps(colors_to_cycle)
+        logging.info("Loaded colors")
+        with open(LightWorker.color_state_file, "w") as file:
+            file.write(color_state)
 
+    @staticmethod
+    def __get_colors_to_cycle():
+        with open(LightWorker.color_state_file, "r") as file:
+            data = file.read()
+        return json.loads(data)
+
+    @staticmethod
+    def change_light_color():
+        """Returns list of colors to cycle, and light device object"""
+        colors_to_cycle = LightWorker.__get_colors_to_cycle()
         light = hubitatcontrol.lookup_device(hub_in=get_hub(), device_lookup=os.getenv("HUBITAT_DEVICE_TO_CYCLE"))
         logging.info("Starting color change")
         logging.info(json.dumps(colors_to_cycle))
