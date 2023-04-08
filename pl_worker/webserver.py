@@ -1,10 +1,12 @@
 import logging
 import os
+import time
 
 import uvicorn
 from fastapi import FastAPI
 from starlette.responses import RedirectResponse
 
+import pl_worker
 import pl_worker.porch_light as porch_light
 
 if os.getenv("LOG_LEVEL") is None:
@@ -32,7 +34,13 @@ class web_app:
 
             background_server = Process(target=porch_light.LightWorker.change_light_color, daemon=True)
             background_server.start()
-            return {background_server.pid}
+            while background_server.is_alive():
+                time.sleep(1)
+            import pl_worker
+
+            p_obj = pl_worker.porch_light.LightWorker()
+            p_obj.pre_load_color()
+            return {"EXITCODE=" + str(background_server.exitcode)}
 
 
 class Server:
@@ -57,5 +65,6 @@ class Server:
 
 
 if __name__ == "__main__":
+    p = pl_worker.porch_light.LightWorker()
+    p.pre_load_color()
     Server().start_server()
-    # TODO Add pre-load for color cycle to cut down on cold start time
