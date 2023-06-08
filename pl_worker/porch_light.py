@@ -129,9 +129,9 @@ class LightWorker:
                 # Normalize RGB Values, as colorsys takes 0-1.0 for input
 
                 # Scale values up to 0-100 for Hubitat
-                hue = hsl[0] * 100
+                hue = round(hsl[0] * 100)
                 level = 100  # Always full brightness
-                sat = hsl[2] * 100
+                sat = round(hsl[2] * 100)
                 logging.debug(f"HUE={hue}  SAT={sat}")
 
                 if light.switch != "on":  # Exit function if light was turned off after start of run
