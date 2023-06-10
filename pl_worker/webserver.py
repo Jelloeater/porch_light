@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import time
@@ -58,7 +59,11 @@ class web_app:
 
             p_obj = pl_worker.porch_light.LightWorker()
             p_obj.pre_load_color()
-            return {"EXITCODE=" + str(background_server.exitcode)}
+            r = json.dumps({"EXITCODE": background_server.exitcode})
+            if background_server.exitcode == 0:
+                return JSONResponse(status_code=status.HTTP_200_OK, content=r)
+            else:
+                return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content=r)
 
 
 class Server:
