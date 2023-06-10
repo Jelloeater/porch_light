@@ -3,8 +3,9 @@ import os
 import time
 
 import uvicorn
-from fastapi import FastAPI, HTTPException
-from starlette.responses import RedirectResponse
+from fastapi import FastAPI
+from starlette import status
+from starlette.responses import JSONResponse, RedirectResponse
 
 import pl_worker
 import pl_worker.porch_light as porch_light
@@ -23,13 +24,27 @@ class web_app:
         async def root():
             return RedirectResponse(self.app.docs_url)
 
-        @self.app.get("/check-hub")
+        @self.app.get(
+            "/check-hub",  # For AutoDocs
+            responses={
+                status.HTTP_200_OK: {"description": "Connection to hub OK"},
+                status.HTTP_503_SERVICE_UNAVAILABLE: {
+                    "description": "Cannot connect to hub",
+                },
+            },
+        )
         async def check_hub():
             h = porch_light.check_hub()
             if h.host is not None:
-                return {"OK"}
+                return JSONResponse(
+                    status_code=status.HTTP_200_OK,
+                    content="OK",
+                )
             else:
-                raise HTTPException(status_code=503, detail="Cannot Find Hub")
+                return JSONResponse(
+                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                    content="Cannot get Hubitat",
+                )
 
         @self.app.get("/start")
         async def start():  # pragma: no cover # TODO Remove when test fixed
