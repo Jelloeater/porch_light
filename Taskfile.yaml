@@ -63,7 +63,11 @@ tasks:
             - poetry run mdformat docs
             - git add docs
     docker-purge: docker system prune -a -f --volumes
-    start_webserver: poetry run python3 pl_worker/webserver.py
+    start_webserver_dev:
+        dotenv:
+            - ".env"
+        cmds:
+            - poetry run python3 pl_worker/webserver.py
     start_docker_rootless:
         env: # Due to running root-less on dev box
             DOCKER_HOST: unix:///run/user/1000/docker.sock

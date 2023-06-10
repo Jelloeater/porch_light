@@ -3,7 +3,7 @@ import os
 import time
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from starlette.responses import RedirectResponse
 
 import pl_worker
@@ -26,7 +26,10 @@ class web_app:
         @self.app.get("/check-hub")
         async def check_hub():
             h = porch_light.check_hub()
-            return {h}
+            if h.host is not None:
+                return {"OK"}
+            else:
+                raise HTTPException(status_code=503, detail="Cannot Find Hub")
 
         @self.app.get("/start")
         async def start():  # pragma: no cover # TODO Remove when test fixed
