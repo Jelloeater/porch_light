@@ -15,7 +15,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-hubitatcontrol = "2.3.3"
+hubitatcontrol = "3.0.2"
 extcolors = "*"
 bing-image-downloader = "*"
 fastapi ="*"
